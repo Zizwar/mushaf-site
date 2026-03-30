@@ -3,20 +3,662 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mushaf Mauri - المصحف الموري</title>
-    <meta name="description" content="مصحف موري - القرآن الكريم - ورش | Mushaf Mauri - The Holy Quran - Warsh">
-    
-    <meta http-equiv="refresh" content="0; url=https://www.mushaf.ma">
-    
-    <script>
-        window.location.replace("https://www.mushaf.ma");
-    </script>
-
+    <title>دعم المشروع — المصحف الموري</title>
+    <meta name="description" content="دعم مشروع مصحف موري — تطبيق مفتوح المصدر لقراءة القرآن الكريم برواية ورش">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --primary: #357fef;
+            --primary-dark: #2563c7;
+            --accent: #13B8EA;
+            --green: #22c55e;
+            --bg: #ffffff;
+            --bg-alt: #f8f9ff;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --text-light: #ffffff;
+            --card-bg: #ffffff;
+            --card-shadow: 0 2px 16px rgba(0,0,0,0.06);
+            --border: #e5e7eb;
+            --nav-bg: rgba(255,255,255,0.97);
+            --hero-gradient: linear-gradient(135deg, #0d1033 0%, #1a1f4e 50%, #2a2f6e 100%);
+            --footer-bg: #0d1033;
+            --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --bg-alt: #1e293b;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --card-shadow: 0 2px 16px rgba(0,0,0,0.28);
+            --border: #334155;
+            --nav-bg: rgba(15,23,42,0.97);
+            --hero-gradient: linear-gradient(135deg, #050816 0%, #0f172a 50%, #1a1f4e 100%);
+            --footer-bg: #050816;
+        }
+
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Kufi Arabic', sans-serif;
+            background: var(--bg); color: var(--text);
+            line-height: 1.8; transition: background var(--transition), color var(--transition);
+        }
+        a { text-decoration: none; color: inherit; }
+
+        /* ===== Nav ===== */
+        .navbar {
+            position: fixed; top:0; left:0; right:0; z-index:1000;
+            background: var(--nav-bg); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border); padding: 0 24px;
+        }
+        .nav-inner {
+            max-width:1100px; margin:0 auto;
+            display:flex; align-items:center; justify-content:space-between; height:60px;
+        }
+        .nav-brand {
+            font-size:1.15rem; font-weight:700; color:var(--primary);
+            display:flex; align-items:center; gap:7px;
+        }
+        .nav-links { display:flex; gap:20px; list-style:none; }
+        .nav-links a { font-size:0.87rem; font-weight:500; color:var(--text-muted); transition:color var(--transition); }
+        .nav-links a:hover, .nav-links a.active { color:var(--primary); }
+        .nav-btn {
+            width:36px; height:36px; border-radius:8px;
+            border:1px solid var(--border); background:var(--card-bg);
+            color:var(--text); cursor:pointer; display:flex;
+            align-items:center; justify-content:center; font-size:0.9rem;
+            transition:all var(--transition);
+        }
+        .nav-btn:hover { border-color:var(--primary); color:var(--primary); }
+        @media (max-width:600px) { .nav-links { display:none; } }
+
+        /* ===== Hero ===== */
+        .hero {
+            background: var(--hero-gradient);
+            padding: 100px 24px 60px;
+            text-align: center; position:relative; overflow:hidden;
+        }
+        .hero::before {
+            content:''; position:absolute; top:-30%; left:50%; transform:translateX(-50%);
+            width:70%; height:180%;
+            background: radial-gradient(circle, rgba(53,127,239,0.14) 0%, transparent 65%);
+            pointer-events:none;
+        }
+        .hero-inner { position:relative; z-index:1; max-width:600px; margin:0 auto; }
+        .hero-icon {
+            width:70px; height:70px; border-radius:50%;
+            background: rgba(53,127,239,0.18);
+            border: 1.5px solid rgba(53,127,239,0.35);
+            display:flex; align-items:center; justify-content:center;
+            margin:0 auto 20px; font-size:1.8rem;
+        }
+        .hero h1 {
+            font-family:'Amiri', serif; font-size:clamp(1.7rem,4vw,2.4rem);
+            color:#fff; margin-bottom:14px; line-height:1.5;
+        }
+        .hero p {
+            color:#a0aec0; font-size:0.97rem; line-height:1.9; margin-bottom:10px;
+        }
+        .hero .note {
+            display:inline-block; margin-top:16px;
+            background:rgba(34,197,94,0.12);
+            border:1px solid rgba(34,197,94,0.3);
+            color:#4ade80; padding:6px 18px; border-radius:100px;
+            font-size:0.82rem;
+        }
+
+        /* ===== Section ===== */
+        .section { padding:56px 24px; }
+        .container { max-width:760px; margin:0 auto; }
+        .section-title {
+            text-align:center; margin-bottom:36px;
+        }
+        .section-title h2 {
+            font-family:'Amiri', serif; font-size:1.5rem;
+            color:var(--text); margin-bottom:6px;
+        }
+        .section-title p { color:var(--text-muted); font-size:0.9rem; }
+        .divider { border:none; border-top:1px solid var(--border); margin:40px 0; }
+
+        /* ===== Contributors Ticker ===== */
+        .ticker-section { background:var(--bg-alt); padding:40px 0; overflow:hidden; }
+        .ticker-label {
+            text-align:center; margin-bottom:22px;
+            font-size:0.88rem; color:var(--text-muted); letter-spacing:0.02em;
+        }
+        .ticker-label span { color:var(--primary); font-weight:600; }
+
+        .ticker-wrap {
+            overflow:hidden; position:relative;
+            mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+        }
+        .ticker-track {
+            display:flex; gap:14px; width:max-content;
+            animation: ticker-move 38s linear infinite;
+        }
+        .ticker-track:hover { animation-play-state:paused; }
+
+        @keyframes ticker-move {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .contributor-card {
+            flex-shrink:0;
+            background:var(--card-bg); border:1px solid var(--border);
+            border-radius:14px; padding:14px 18px;
+            display:flex; gap:12px; align-items:flex-start;
+            width:230px; box-shadow:var(--card-shadow);
+            transition:box-shadow var(--transition);
+        }
+        .contributor-card:hover { box-shadow:0 6px 24px rgba(53,127,239,0.12); }
+
+        .avatar {
+            width:38px; height:38px; border-radius:50%; flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+            font-size:0.95rem; font-weight:700; color:#fff;
+        }
+
+        .contrib-body { flex:1; min-width:0; }
+        .contrib-name {
+            font-size:0.88rem; font-weight:600; color:var(--text);
+            white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+        }
+        .contrib-id { font-size:0.75rem; color:var(--text-muted); direction:ltr; display:inline-block; }
+        .contrib-amount {
+            font-size:0.78rem; color:var(--green);
+            font-weight:500; margin:2px 0;
+        }
+        .contrib-msg {
+            font-size:0.8rem; color:var(--text-muted);
+            line-height:1.5; margin-top:3px;
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+        }
+        .contrib-msg.dua { color:#c084fc; }
+        .contrib-msg.rahma { color:#fb923c; }
+
+        /* ===== Payment Section ===== */
+        .payment-section { background:var(--bg); }
+
+        .payment-grid {
+            display:grid; grid-template-columns:1fr;
+            gap:10px; max-width:520px; margin:0 auto;
+        }
+
+        details.pay-method {
+            border:1px solid var(--border); border-radius:12px;
+            background:var(--card-bg); overflow:hidden;
+            transition:box-shadow var(--transition);
+        }
+        details.pay-method[open] { box-shadow:var(--card-shadow); }
+
+        summary.pay-summary {
+            display:flex; align-items:center; gap:14px;
+            padding:15px 18px; cursor:pointer;
+            list-style:none; user-select:none;
+            transition:background var(--transition);
+        }
+        summary.pay-summary::-webkit-details-marker { display:none; }
+        summary.pay-summary:hover { background:var(--bg-alt); }
+
+        .pay-icon {
+            width:38px; height:38px; border-radius:9px; flex-shrink:0;
+            display:flex; align-items:center; justify-content:center;
+            font-size:1.1rem;
+        }
+        .pay-icon.bank  { background:#e0f0ff; color:#357fef; }
+        .pay-icon.bnb   { background:#fff7e0; color:#f0b90b; }
+        .pay-icon.pp    { background:#e8f4fd; color:#003087; }
+
+        .pay-label { flex:1; }
+        .pay-label strong { font-size:0.92rem; color:var(--text); display:block; }
+        .pay-label span   { font-size:0.78rem; color:var(--text-muted); }
+
+        .pay-chevron {
+            color:var(--text-muted); font-size:0.75rem;
+            transition:transform var(--transition);
+        }
+        details[open] .pay-chevron { transform:rotate(180deg); }
+
+        .pay-body {
+            padding:0 18px 18px; border-top:1px solid var(--border);
+            font-size:0.88rem; color:var(--text);
+        }
+        .pay-body .field {
+            display:flex; flex-direction:column; gap:2px;
+            margin-top:12px;
+        }
+        .pay-body .field label { font-size:0.75rem; color:var(--text-muted); }
+        .pay-body .field .val {
+            font-family:monospace; font-size:0.9rem;
+            background:var(--bg-alt); padding:7px 12px; border-radius:7px;
+            border:1px solid var(--border); letter-spacing:0.04em;
+            direction:ltr; text-align:left; color:var(--text);
+            display:flex; align-items:center; justify-content:space-between;
+        }
+        .copy-btn {
+            background:none; border:none; cursor:pointer;
+            color:var(--primary); font-size:0.85rem; padding:2px 4px;
+            transition:opacity var(--transition);
+        }
+        .copy-btn:hover { opacity:0.7; }
+        .copy-btn.copied { color:var(--green); }
+
+        .qr-wrap { text-align:center; margin-top:14px; }
+        .qr-wrap img {
+            width:150px; height:150px; border-radius:10px;
+            border:2px solid var(--border);
+        }
+        .qr-wrap p { font-size:0.78rem; color:var(--text-muted); margin-top:6px; }
+
+        .pp-link {
+            display:inline-flex; align-items:center; gap:8px;
+            margin-top:14px; padding:9px 20px; border-radius:9px;
+            background:#0070ba; color:#fff; font-size:0.88rem; font-weight:500;
+            transition:opacity var(--transition);
+        }
+        .pp-link:hover { opacity:0.88; }
+
+        /* ===== Contact ===== */
+        .contact-section { background:var(--bg-alt); padding:44px 24px; }
+        .contact-box {
+            max-width:420px; margin:0 auto; text-align:center;
+        }
+        .contact-box p { font-size:0.9rem; color:var(--text-muted); margin-bottom:16px; }
+        .email-reveal-btn {
+            display:inline-flex; align-items:center; gap:8px;
+            background:none; border:1px solid var(--border);
+            color:var(--text-muted); padding:9px 20px; border-radius:9px;
+            cursor:pointer; font-family:inherit; font-size:0.88rem;
+            transition:all var(--transition);
+        }
+        .email-reveal-btn:hover { border-color:var(--primary); color:var(--primary); }
+        #emailDisplay {
+            display:none; margin-top:12px;
+            font-size:0.92rem; color:var(--primary);
+            padding:9px 18px; background:var(--card-bg);
+            border:1px solid var(--border); border-radius:9px;
+        }
+        #emailDisplay a { color:var(--primary); }
+
+        /* ===== Dua Section ===== */
+        .dua-section {
+            background: var(--hero-gradient);
+            padding:44px 24px; text-align:center;
+        }
+        .dua-text {
+            font-family:'Amiri', serif; font-size:1.2rem;
+            color:#e2e8f0; line-height:2.2; max-width:540px; margin:0 auto;
+        }
+        .dua-text .highlight { color:#93c5fd; }
+
+        /* ===== Footer ===== */
+        footer {
+            background:var(--footer-bg); color:#6b7e9e;
+            padding:28px 24px; text-align:center; font-size:0.83rem;
+        }
+        footer a { color:#5b9bd5; }
+    </style>
 </head>
 <body>
-    <p>جاري تحويلك إلى المصحف الموري... إذا لم يتم التحويل تلقائياً <a href="https://www.mushaf.ma">اضغط هنا</a>.</p>
+
+<!-- Nav -->
+<nav class="navbar">
+    <div class="nav-inner">
+        <a href="../index.html" class="nav-brand">
+            <span>&#1758;</span> المصحف الموري
+        </a>
+        <ul class="nav-links">
+            <li><a href="../index.html">الرئيسية</a></li>
+            <li><a href="../docs/index.html">الوثائق</a></li>
+            <li><a href="#" class="active">دعم المشروع</a></li>
+        </ul>
+        <button class="nav-btn" id="themeToggle" aria-label="تبديل المظهر">
+            <i class="fa fa-moon-o" id="themeIcon"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-icon">🤲</div>
+        <h1>ادعم مشروع المصحف الموري</h1>
+        <p>
+            تطبيق مفتوح المصدر مجاني تماماً، لا إعلانات، لا اشتراكات.<br>
+            دعمك يُسهم في تطوير التطبيق وتوفير أرضية صلبة للمبرمجين المستقبليين<br>
+            الذين يرغبون في بناء مشاريعهم القرآنية الخاصة.
+        </p>
+        <span class="note">
+            <i class="fa fa-check-circle"></i>
+            &nbsp;المشروع مجاني ولن ينقص منه شيء بدعمك أو بدونه
+        </span>
+    </div>
+</section>
+
+<!-- Contributors Ticker -->
+<section class="ticker-section">
+    <div class="ticker-label">
+        <span>شكر وتقدير</span> — من أسهموا في دعم المشروع
+    </div>
+
+    <div class="ticker-wrap">
+        <div class="ticker-track" id="tickerTrack">
+
+            <!-- Card 1 -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#4f7df3;">س</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">Said Moftakir</div>
+                    <div class="contrib-amount">100 $</div>
+                    <div class="contrib-msg dua">اللهم اغفر لوالديّ وارحمهما</div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#0e9f6e;">م</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">Mehdi Baha</div>
+                    <div class="contrib-amount">20 $</div>
+                    <div class="contrib-msg rahma">صدقة جارية عن روح جدي الغندور رحمة الله عليه</div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#7c3aed;">ح</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">حسن مرشاش</div>
+                    <div class="contrib-amount">700 درهم</div>
+                    <div class="contrib-msg rahma">من أجل والدي، رحمة الله عليه</div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#db7706;">ع</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">علي لعتابي</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">بدون مبلغ محدد</div>
+                    <div class="contrib-msg dua">اللهم ارزقني الزوجة الصالحة 🤲 بالتوفيق</div>
+                </div>
+            </div>
+
+            <!-- Card 5 — anonymous with request -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#475569;">م</div>
+                <div class="contrib-body">
+                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
+                    <div class="contrib-id">#m-7632</div>
+                    <div class="contrib-amount">5 $</div>
+                    <div class="contrib-msg" style="color:var(--text-muted);">رجاءً لو أمكن تحسين الوضع الليلي في بعض القراءات</div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#be185d;">ن</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">نوال زكرار</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-msg dua">دعاء لوالدتي الحبيبة المريضة، اللهم اشفها</div>
+                </div>
+            </div>
+
+            <!-- Card 7 — totally anonymous -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#334155;">?</div>
+                <div class="contrib-body">
+                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-msg" style="color:var(--text-muted); font-style:italic;">بدون رسالة</div>
+                </div>
+            </div>
+
+            <!-- راضية -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#0891b2;">ر</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">راضية</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-msg dua">ادعوا لأمي بحجة مقبولة إن شاء الله 🕋</div>
+                </div>
+            </div>
+
+            <!-- Duplicate for seamless loop -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#4f7df3;">س</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">Said Moftakir</div>
+                    <div class="contrib-amount">100 $</div>
+                    <div class="contrib-msg dua">اللهم اغفر لوالديّ وارحمهما</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#0e9f6e;">م</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">Mehdi Baha</div>
+                    <div class="contrib-amount">20 $</div>
+                    <div class="contrib-msg rahma">صدقة جارية عن روح جدي الغندور رحمة الله عليه</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#7c3aed;">ح</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">حسن مرشاش</div>
+                    <div class="contrib-amount">700 درهم</div>
+                    <div class="contrib-msg rahma">من أجل والدي، رحمة الله عليه</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#db7706;">ع</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">علي لعتابي</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">بدون مبلغ محدد</div>
+                    <div class="contrib-msg dua">اللهم ارزقني الزوجة الصالحة 🤲 بالتوفيق</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#475569;">م</div>
+                <div class="contrib-body">
+                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
+                    <div class="contrib-id">#m-7632</div>
+                    <div class="contrib-amount">5 $</div>
+                    <div class="contrib-msg" style="color:var(--text-muted);">رجاءً لو أمكن تحسين الوضع الليلي في بعض القراءات</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#be185d;">ن</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">نوال زكرار</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-msg dua">دعاء لوالدتي الحبيبة المريضة، اللهم اشفها</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#334155;">?</div>
+                <div class="contrib-body">
+                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-msg" style="color:var(--text-muted); font-style:italic;">بدون رسالة</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#0891b2;">ر</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">راضية</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-msg dua">ادعوا لأمي بحجة مقبولة إن شاء الله 🕋</div>
+                </div>
+            </div>
+
+        </div><!-- end ticker-track -->
+    </div>
+</section>
+
+<hr class="divider" style="margin:0;">
+
+<!-- Payment Methods -->
+<section class="section payment-section" id="donate">
+    <div class="container">
+        <div class="section-title">
+            <h2>طرق الدعم</h2>
+            <p>اختر الطريقة المناسبة لك — انقر لعرض التفاصيل</p>
+        </div>
+
+        <div class="payment-grid">
+
+            <!-- Wafabank -->
+            <details class="pay-method">
+                <summary class="pay-summary">
+                    <div class="pay-icon bank"><i class="fa fa-university"></i></div>
+                    <div class="pay-label">
+                        <strong>تحويل بنكي — وفاباك</strong>
+                        <span>CIH / Wafabank — المملكة المغربية</span>
+                    </div>
+                    <i class="fa fa-chevron-down pay-chevron"></i>
+                </summary>
+                <div class="pay-body">
+                    <div class="field">
+                        <label>اسم الحساب</label>
+                        <div class="val">Brahim Bidi</div>
+                    </div>
+                    <div class="field">
+                        <label>رقم الحساب البنكي (RIB)</label>
+                        <div class="val">
+                            <span id="ribVal">007780000117200030478490</span>
+                            <button class="copy-btn" onclick="copyRib()" title="نسخ الـ RIB">
+                                <i class="fa fa-copy" id="copyIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>البنك</label>
+                        <div class="val">Banque Commerciale du Maroc — Wafabank</div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- Binance Pay -->
+            <details class="pay-method">
+                <summary class="pay-summary">
+                    <div class="pay-icon bnb"><i class="fa fa-qrcode"></i></div>
+                    <div class="pay-label">
+                        <strong>Binance Pay</strong>
+                        <span>تحويل عملات رقمية</span>
+                    </div>
+                    <i class="fa fa-chevron-down pay-chevron"></i>
+                </summary>
+                <div class="pay-body">
+                    <div class="qr-wrap">
+                        <img src="../assets/images/binance_pay.png" alt="Binance Pay QR Code">
+                        <p>امسح الرمز بتطبيق Binance</p>
+                    </div>
+                </div>
+            </details>
+
+            <!-- PayPal -->
+            <details class="pay-method">
+                <summary class="pay-summary">
+                    <div class="pay-icon pp"><i class="fa fa-paypal"></i></div>
+                    <div class="pay-label">
+                        <strong>PayPal</strong>
+                        <span>دفع دولي سريع</span>
+                    </div>
+                    <i class="fa fa-chevron-down pay-chevron"></i>
+                </summary>
+                <div class="pay-body">
+                    <p style="color:var(--text-muted); font-size:0.85rem; margin-top:12px;">
+                        يمكنك الدفع مباشرة عبر PayPal بالضغط على الزر أدناه:
+                    </p>
+                    <a href="https://www.paypal.me/ibrahimbidi" target="_blank" rel="noopener" class="pp-link">
+                        <i class="fa fa-paypal"></i> التبرع عبر PayPal
+                    </a>
+                </div>
+            </details>
+
+        </div><!-- end payment-grid -->
+    </div>
+</section>
+
+<!-- Contact -->
+<section class="contact-section">
+    <div class="contact-box">
+        <p>للتواصل مع المطور أو لإضافة اسمك في قائمة المساهمين</p>
+        <button class="email-reveal-btn" onclick="revealEmail()">
+            <i class="fa fa-envelope-o"></i> عرض البريد الإلكتروني
+        </button>
+        <div id="emailDisplay">
+            <a href="mailto:ibrahimbidi@yahoo.com">ibrahimbidi@yahoo.com</a>
+        </div>
+    </div>
+</section>
+
+<!-- Dua -->
+<section class="dua-section">
+    <p class="dua-text">
+        جزى الله خيراً كل من <span class="highlight">ساهم ودعا وشارك</span>،<br>
+        اللهم تقبّل من الجميع وبارك في أوقاتهم وأموالهم وذرياتهم،<br>
+        واغفر لوالدي <span class="highlight">كل من ذكر والديه</span> في هذه الصفحة.
+    </p>
+</section>
+
+<!-- Footer -->
+<footer>
+    <p>
+        <a href="../index.html">المصحف الموري</a> &mdash;
+        مشروع مفتوح المصدر &mdash;
+        <a href="https://github.com/Zizwar/mushaf-mauri" target="_blank" rel="noopener">GitHub</a>
+    </p>
+</footer>
+
+<script>
+    // ===== Theme =====
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon   = document.getElementById('themeIcon');
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    themeIcon.className = saved === 'dark' ? 'fa fa-sun-o' : 'fa fa-moon-o';
+    themeToggle.addEventListener('click', () => {
+        const cur  = document.documentElement.getAttribute('data-theme');
+        const next = cur === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeIcon.className = next === 'dark' ? 'fa fa-sun-o' : 'fa fa-moon-o';
+    });
+
+    // ===== Copy RIB =====
+    function copyRib() {
+        const rib  = document.getElementById('ribVal').textContent.trim();
+        const icon = document.getElementById('copyIcon');
+        const btn  = icon.closest('.copy-btn');
+        navigator.clipboard.writeText(rib).then(() => {
+            icon.className = 'fa fa-check';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                icon.className = 'fa fa-copy';
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    }
+
+    // ===== Reveal Email =====
+    function revealEmail() {
+        const el = document.getElementById('emailDisplay');
+        el.style.display = el.style.display === 'none' || el.style.display === '' ? 'block' : 'none';
+    }
+
+    // ===== Pause ticker on touch (mobile) =====
+    const track = document.getElementById('tickerTrack');
+    track.addEventListener('touchstart', () => track.style.animationPlayState = 'paused', { passive: true });
+    track.addEventListener('touchend',   () => track.style.animationPlayState = 'running');
+</script>
 </body>
 </html>

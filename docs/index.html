@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الورقة البيضاء - مصحف موري | White Paper - Mushaf Mauri</title>
+    <meta name="description" content="وثيقة تقنية: مابينغ الآيات بين رواية ورش ورواية حفص | Technical Paper: Verse Mapping between Warsh and Hafs narrations">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;500;600;700&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --primary: #357fef;
+            --primary-dark: #2563c7;
+            --accent: #13B8EA;
+            --bg: #ffffff;
+            --bg-alt: #f8f9ff;
+            --bg-paper: #fafaf8;
+            --text: #1a1a2e;
+            --text-muted: #6b7280;
+            --text-light: #ffffff;
+            --card-bg: #ffffff;
+            --card-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            --border: #e5e7eb;
+            --border-light: #f0f0f0;
+            --nav-bg: rgba(255,255,255,0.97);
+            --hero-gradient: linear-gradient(135deg, #0d1033 0%, #1a1f4e 50%, #2a2f6e 100%);
+            --footer-bg: #0d1033;
+            --code-bg: #1e1e2e;
+            --code-text: #cdd6f4;
+            --table-header: #f0f4ff;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --doc-max-width: 860px;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --bg-alt: #1e293b;
+            --bg-paper: #131929;
+            --text: #e2e8f0;
+            --text-muted: #94a3b8;
+            --card-bg: #1e293b;
+            --card-shadow: 0 4px 24px rgba(0,0,0,0.3);
+            --border: #334155;
+            --border-light: #2a3547;
+            --nav-bg: rgba(15,23,42,0.97);
+            --hero-gradient: linear-gradient(135deg, #050816 0%, #0f172a 50%, #1a1f4e 100%);
+            --footer-bg: #050816;
+            --table-header: #1e2d4d;
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Noto Kufi Arabic', 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        [dir="ltr"] body { font-family: 'Inter', 'Noto Kufi Arabic', sans-serif; }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ===== Nav ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 24px;
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 64px;
+        }
+        .nav-brand {
+            font-size: 1.2rem; font-weight: 700; color: var(--primary);
+            display: flex; align-items: center; gap: 8px;
+        }
+        .nav-links {
+            display: flex; align-items: center; gap: 20px; list-style: none;
+        }
+        .nav-links a {
+            font-size: 0.88rem; font-weight: 500; color: var(--text-muted);
+            transition: color var(--transition);
+        }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary); }
+        .nav-controls { display: flex; align-items: center; gap: 8px; }
+        .nav-btn {
+            width: 38px; height: 38px; border-radius: 9px;
+            border: 1px solid var(--border); background: var(--card-bg);
+            color: var(--text); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.9rem; transition: all var(--transition);
+        }
+        .nav-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .back-btn {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.85rem; color: var(--text-muted);
+            transition: color var(--transition);
+        }
+        .back-btn:hover { color: var(--primary); }
+        .back-btn i { font-size: 0.75rem; }
+
+        @media (max-width: 640px) {
+            .nav-links { display: none; }
+        }
+
+        /* ===== Hero ===== */
+        .doc-hero {
+            background: var(--hero-gradient);
+            padding: 110px 24px 70px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .doc-hero::before {
+            content: '';
+            position: absolute; top: -40%; left: 50%; transform: translateX(-50%);
+            width: 80%; height: 200%;
+            background: radial-gradient(circle, rgba(53,127,239,0.15) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .doc-hero-inner { position: relative; z-index: 1; }
+        .doc-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(53,127,239,0.15);
+            border: 1px solid rgba(53,127,239,0.35);
+            color: #90b8f8; padding: 6px 16px; border-radius: 100px;
+            font-size: 0.82rem; margin-bottom: 20px;
+        }
+        .doc-hero h1 {
+            font-family: 'Amiri', serif; font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: #fff; line-height: 1.4; margin-bottom: 14px;
+        }
+        .doc-hero p {
+            color: #a0aec0; font-size: 1rem; max-width: 620px; margin: 0 auto 28px;
+        }
+        .doc-meta {
+            display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;
+            color: #6b7e9e; font-size: 0.82rem;
+        }
+        .doc-meta span { display: flex; align-items: center; gap: 5px; }
+
+        /* ===== Tab Navigation ===== */
+        .tab-nav-wrap {
+            background: var(--bg);
+            border-bottom: 2px solid var(--border);
+            position: sticky; top: 64px; z-index: 900;
+        }
+        .tab-nav {
+            max-width: var(--doc-max-width); margin: 0 auto;
+            display: flex; gap: 0; padding: 0 24px;
+        }
+        .tab-btn {
+            padding: 14px 20px; font-size: 0.9rem; font-weight: 500;
+            color: var(--text-muted); background: none; border: none;
+            border-bottom: 3px solid transparent; cursor: pointer;
+            transition: all var(--transition); margin-bottom: -2px;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: var(--primary); }
+        .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+        /* ===== Document Layout ===== */
+        .doc-wrapper {
+            max-width: var(--doc-max-width);
+            margin: 0 auto; padding: 56px 24px 80px;
+        }
+
+        .doc-section { display: none; }
+        .doc-section.active { display: block; }
+
+        /* ===== Typography ===== */
+        .doc-wrapper h2 {
+            font-family: 'Amiri', serif;
+            font-size: 1.75rem; color: var(--primary);
+            margin: 48px 0 16px; padding-bottom: 10px;
+            border-bottom: 2px solid var(--border);
+        }
+        [dir="ltr"] .doc-wrapper h2 { font-family: 'Inter', sans-serif; font-weight: 700; }
+
+        .doc-wrapper h3 {
+            font-size: 1.15rem; font-weight: 700;
+            margin: 32px 0 12px; color: var(--text);
+        }
+        .doc-wrapper h4 {
+            font-size: 1rem; font-weight: 600;
+            margin: 24px 0 10px; color: var(--primary-dark);
+        }
+        .doc-wrapper p {
+            margin-bottom: 16px; color: var(--text);
+        }
+        .doc-wrapper ul, .doc-wrapper ol {
+            padding-inline-start: 1.6em; margin-bottom: 16px;
+        }
+        .doc-wrapper li { margin-bottom: 8px; }
+
+        /* Lead paragraph */
+        .doc-lead {
+            font-size: 1.08rem; line-height: 2;
+            color: var(--text); background: var(--bg-alt);
+            border-inline-start: 4px solid var(--primary);
+            padding: 20px 24px; border-radius: 0 10px 10px 0;
+            margin-bottom: 32px;
+        }
+        [dir="ltr"] .doc-lead { border-inline-start: 4px solid var(--primary); border-radius: 0 10px 10px 0; }
+
+        /* Callout box */
+        .callout {
+            background: var(--bg-alt); border: 1px solid var(--border);
+            border-inline-start: 4px solid var(--accent);
+            border-radius: 0 10px 10px 0;
+            padding: 16px 20px; margin: 24px 0; font-size: 0.95rem;
+        }
+        .callout.warning { border-inline-start-color: #f59e0b; background: #fffbeb; }
+        [data-theme="dark"] .callout.warning { background: #1c1a0a; }
+        .callout strong { color: var(--primary); }
+
+        /* ===== Concept Cards ===== */
+        .concept-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 16px; margin: 24px 0;
+        }
+        @media (max-width: 600px) { .concept-grid { grid-template-columns: 1fr; } }
+        .concept-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 12px; padding: 20px;
+            box-shadow: var(--card-shadow);
+        }
+        .concept-card .concept-icon {
+            font-size: 1.6rem; margin-bottom: 10px;
+        }
+        .concept-card h4 { margin-top: 0; font-size: 0.95rem; }
+        .concept-card p { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 0; }
+
+        /* ===== Code blocks ===== */
+        pre {
+            background: var(--code-bg); color: var(--code-text);
+            border-radius: 10px; padding: 20px 22px;
+            overflow-x: auto; margin: 20px 0;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+            line-height: 1.6; direction: ltr; text-align: left;
+        }
+        code {
+            font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
+            background: var(--code-bg); color: var(--code-text);
+            padding: 2px 6px; border-radius: 4px;
+        }
+        pre code { background: none; padding: 0; font-size: inherit; }
+
+        /* ===== Tables ===== */
+        .table-wrap { overflow-x: auto; margin: 20px 0; border-radius: 10px; border: 1px solid var(--border); }
+        table {
+            width: 100%; border-collapse: collapse; font-size: 0.88rem;
+        }
+        thead { background: var(--table-header); }
+        th {
+            padding: 11px 14px; text-align: start; font-weight: 600;
+            color: var(--primary); border-bottom: 2px solid var(--border);
+        }
+        td {
+            padding: 9px 14px; border-bottom: 1px solid var(--border-light);
+            color: var(--text);
+        }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: var(--bg-alt); }
+        td code { font-size: 0.82em; }
+
+        /* ===== Stats bar ===== */
+        .stats-row {
+            display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0;
+        }
+        .stat-box {
+            flex: 1; min-width: 140px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 16px 20px; text-align: center;
+            box-shadow: var(--card-shadow);
+        }
+        .stat-box .stat-num {
+            font-size: 1.8rem; font-weight: 700; color: var(--primary);
+            display: block; line-height: 1.2;
+        }
+        .stat-box .stat-label { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* ===== Section divider ===== */
+        .section-num {
+            display: inline-block;
+            background: var(--primary); color: white;
+            width: 28px; height: 28px; border-radius: 50%;
+            text-align: center; line-height: 28px; font-size: 0.8rem;
+            font-weight: 700; margin-inline-end: 10px; vertical-align: middle;
+        }
+
+        /* ===== Footer ===== */
+        .doc-footer {
+            background: var(--footer-bg); color: #a0aec0;
+            padding: 40px 24px; text-align: center;
+            font-size: 0.87rem;
+        }
+        .doc-footer a { color: var(--accent); }
+        .doc-footer .footer-links {
+            display: flex; justify-content: center; gap: 20px; margin-bottom: 16px;
+        }
+
+        /* ===== Language content blocks ===== */
+        .ar-block { display: block; }
+        .en-block { display: none; }
+        [dir="ltr"] .ar-block { display: none; }
+        [dir="ltr"] .en-block { display: block; }
+
+        /* Inline bilingual swap */
+        [data-ar]:not([data-en-applied]) { /* handled by JS */ }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="../index.html" class="nav-brand">
+                <span>&#1758;</span>
+                <span data-ar="المصحف الموري" data-en="Mushaf Mauri">المصحف الموري</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html" data-ar="الرئيسية" data-en="Home">الرئيسية</a></li>
+                <li><a href="#" class="active" data-ar="الوثائق" data-en="Docs">الوثائق</a></li>
+                <li><a href="../index.html#developers" data-ar="للمطورين" data-en="Developers">للمطورين</a></li>
+            </ul>
+            <div class="nav-controls">
+                <button class="nav-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle dark mode">
+                    <i class="fa fa-moon-o" id="themeIcon"></i>
+                </button>
+                <button class="nav-btn" id="langToggle" title="Toggle language" aria-label="Toggle language">
+                    <span id="langLabel">EN</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="doc-hero">
+        <div class="doc-hero-inner">
+            <div class="doc-badge">
+                <i class="fa fa-file-text-o"></i>
+                <span data-ar="ورقة بيضاء تقنية" data-en="Technical White Paper">ورقة بيضاء تقنية</span>
+            </div>
+            <h1>
+                <span class="ar-block">هندسة مزامنة الآيات<br>رواية ورش مقابل رواية حفص</span>
+                <span class="en-block">Verse Synchronization Architecture<br>Warsh Narration vs. Hafs Narration</span>
+            </h1>
+            <p>
+                <span class="ar-block">توثيق تقني شامل لإشكالية الاختلاف في ترقيم الآيات وحلها البرمجي، موجّه للمطورين العاملين على تطبيقات القرآن الكريم.</span>
+                <span class="en-block">A comprehensive technical document on the verse-numbering discrepancy and its algorithmic solution, aimed at developers building Quran applications.</span>
+            </p>
+            <div class="doc-meta">
+                <span><i class="fa fa-code"></i> <span data-ar="مصحف موري" data-en="Mushaf Mauri">مصحف موري</span></span>
+                <span><i class="fa fa-calendar"></i> 2026</span>
+                <span><i class="fa fa-language"></i> <span data-ar="عربي / English" data-en="Arabic / English">عربي / English</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav-wrap">
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="intro" data-ar="المقدمة" data-en="Introduction">المقدمة</button>
+            <button class="tab-btn" data-tab="mapping" data-ar="وثيقة المابينغ" data-en="Mapping Document">وثيقة المابينغ</button>
+        </div>
+    </div>
+
+    <!-- Document Content -->
+    <div class="doc-wrapper">
+
+        <!-- ==============================
+             TAB 1: INTRODUCTION (paper.md)
+             ============================== -->
+        <div class="doc-section active" id="tab-intro">
+
+            <!-- ARABIC INTRO -->
+            <div class="ar-block">
+                <div class="doc-lead">
+                    عند بناء تطبيقات قرآنية تدعم تعدد الروايات، يصطدم المطورون بتحدٍّ هندسي خفي: الواجهات المصممة لعرض مصحف ورش تعتمد <strong>العدّ المدني الأخير (6,214 آية)</strong>، بينما تعتمد غالبية واجهات برمجة التطبيقات المفتوحة — الخاصة بالتفاسير والترجمات والصوتيات — على <strong>العدّ الكوفي (6,236 آية)</strong> المرتبط برواية حفص.
+                </div>
+
+                <h2><span class="section-num">١</span> الفجوة التقنية في رقمنة المصحف</h2>
+                <p>هذا التباين الرقمي ليس خللاً برمجياً، بل هو <strong>اختلاف علمي موثق تاريخياً</strong> في مدارس إحصاء فواصل الآيات — أين تنتهي الآية وتبدأ الأخرى. غير أن أثره من الناحية البرمجية البحتة يؤدي إلى كسر المزامنة؛ فاستدعاء الآية بناءً على رقمها الظاهر في واجهة ورش سيجلب بيانات غير متطابقة من قاعدة البيانات المصممة على هيكل حفص، مما ينتج عنه تفاوت (Décalage) في النص المقروء، التفسير المعروض، أو المقطع الصوتي.</p>
+
+                <p>تهدف هذه الورقة إلى سدّ واحدة من أندر الفجوات التوثيقية على الإنترنت: تحليل دقيق وحل خوارزمي يوثّق نقاط الاختلاف <strong>آية بآية</strong> بصيغة قابلة للبرمجة. تم استخراج هذه البيانات لبناء طبقة وسيطة (Middleware) تعالج حالات الدمج، التقسيم، والإزاحة ديناميكياً.</p>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span class="stat-num">6,214</span>
+                        <span class="stat-label">آية — ورش (مدني أخير)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num">6,236</span>
+                        <span class="stat-label">آية — حفص (كوفي)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num">22</span>
+                        <span class="stat-label">آية فرق، موزّعة على 50 سورة</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num">56</span>
+                        <span class="stat-label">سورة تحتاج خريطة تحويل</span>
+                    </div>
+                </div>
+
+                <h2><span class="section-num">٢</span> المفاهيم الأساسية: التشريح الهندسي للاختلافات</h2>
+                <p>تخيّل النص القرآني كـ"شريط متصل" من الكلمات، وأن أرقام الآيات مجرد فواصل (Markers) نضعها عليه. الاختلاف بين الروايتين ليس في طول الشريط، بل في <strong>أماكن وضع هذه الفواصل</strong>. ينتج عن ذلك أربع ظواهر برمجية رئيسية:</p>
+
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon">🔗</div>
+                        <h4>الدمج (Merge)</h4>
+                        <p>ورش يعتبر مقطعين آية واحدة، بينما حفص يعدّهما آيتين. يُقلل العدد الإجمالي للآيات.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">✂️</div>
+                        <h4>التقسيم (Split)</h4>
+                        <p>حفص يعدّ مقطعاً طويلاً آية واحدة، بينما ورش يقسمه إلى آيتين. يزيد العدد الإجمالي.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">↔️</div>
+                        <h4>الإزاحة (Offset)</h4>
+                        <p>الفارق الرياضي المستمر بين رقم الآية في ورش ورقمها المقابل في حفص، ينشأ من الدمج أو التقسيم.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🔀</div>
+                        <h4>التحول الهيكلي المعقد</h4>
+                        <p>سورة تحتوي دمجاً وتقسيماً في آنٍ واحد، مما يُبطل الاعتماد على إزاحة ثابتة.</p>
+                    </div>
+                </div>
+
+                <h3>2.1 ظاهرة الدمج — مثال سورة البقرة</h3>
+                <p>في قاعدة البيانات (حفص): الآية 1 هي <code>الم</code> والآية 2 هي <code>ذَلِكَ الْكِتَابُ لاَ رَيْبَ فِيهِ...</code></p>
+                <p>في الواجهة (ورش): الآية 1 المدموجة هي <code>الم ذَلِكَ الْكِتَابُ لاَ رَيْبَ فِيهِ...</code></p>
+                <p><strong>الأثر البرمجي:</strong> عند الضغط على الآية (1) في مصحف ورش، يجب إرسال طلب للـ API لجلب تفسير الآيتين (1 و2) معاً ودمجهما.</p>
+
+                <h3>2.2 ظاهرة التقسيم — مثال سورة محمد</h3>
+                <p>في قاعدة البيانات (حفص): الآية 4 طويلة تبدأ بـ <code>فَإِذَا لَقِيتُمُ الَّذِينَ كَفَرُوا...</code></p>
+                <p>في الواجهة (ورش): مقسّمة إلى الآية 4 والآية 5.</p>
+                <p><strong>الأثر البرمجي:</strong> الآيتان (4) و(5) في ورش تجلبان كلتاهما تفسير الآية (4) من حفص.</p>
+
+                <h3>2.3 مفهوم الإزاحة</h3>
+                <p>الإزاحة هي الفارق الرياضي المستمر: <code>رقم حفص = رقم ورش + الإزاحة</code></p>
+                <ul>
+                    <li><code>offset = +1</code>: حفص يسبق ورش بآية (بسبب دمج سابق)</li>
+                    <li><code>offset = -1</code>: حفص يتأخر عن ورش بآية (بسبب تقسيم سابق)</li>
+                    <li>الإزاحة تتغير عند كل نقطة دمج أو تقسيم</li>
+                </ul>
+
+                <h3>2.4 التحولات الهيكلية المعقدة — مثال سورة آل عمران</h3>
+                <div class="callout">
+                    <strong>التحدي:</strong> سورة آل عمران لديها 200 آية في <em>كلتا</em> الروايتين! المطور قد يفترض التطابق التام (offset = 0) ويتجاهل برمجتها، وهنا تقع الكارثة.
+                </div>
+                <p>ما يحدث فعلياً: ورش دمج الفاتحة <code>الم</code> في بداية السورة مما أحدث إزاحة (+1)، ثم قسّم الآية 92 في حفص إلى آيتين (91 و92) في ورش، ليُلغي أثر الدمج الأول. من الآية 93 حتى 200 يعود التطابق. لذا لا يمكن حل هذا بمعادلة بسيطة، بل بـ<strong>خرائط نطاقات (Range Maps)</strong> داخل الكود.</p>
+            </div>
+
+            <!-- ENGLISH INTRO -->
+            <div class="en-block">
+                <div class="doc-lead">
+                    When building Quranic apps that support multiple recitation narrations, developers face a hidden engineering challenge: frontends displaying the Warsh Mushaf rely on the <strong>Last Madani Count (6,214 verses)</strong>, while most open APIs for commentaries, translations, and audio use the <strong>Kufi Count (6,236 verses)</strong> associated with the Hafs narration.
+                </div>
+
+                <h2><span class="section-num">1</span> The Technical Gap in Quran Digitization</h2>
+                <p>This numerical discrepancy is not a programming bug — it is a <strong>historically documented scholarly difference</strong> in verse-boundary counting schools (where one verse ends and another begins). But from a purely technical standpoint, it breaks synchronization: requesting a verse by its displayed number in the Warsh UI will fetch mismatched data from a Hafs-based database, causing discrepancies in the displayed text, commentary, or audio segment.</p>
+
+                <p>This white paper fills one of the rarest documentation gaps online: a precise analysis and algorithmic solution that documents verse-by-verse divergence points in a <strong>programmatic mapping format</strong>, used to build a middleware layer that dynamically handles Merge, Split, and Offset cases.</p>
+
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <span class="stat-num">6,214</span>
+                        <span class="stat-label">verses — Warsh (Last Madani)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num">6,236</span>
+                        <span class="stat-label">verses — Hafs (Kufi)</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num">22</span>
+                        <span class="stat-label">verse difference, across 50 surahs</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-num">56</span>
+                        <span class="stat-label">surahs needing a mapping table</span>
+                    </div>
+                </div>
+
+                <h2><span class="section-num">2</span> Core Concepts: Engineering Anatomy of the Divergence</h2>
+                <p>Think of the Quranic text as a continuous tape of words, and verse numbers as markers placed on it. The difference between the two narrations is not in the length of the tape, but in <strong>where those markers are placed</strong>. This produces four main technical phenomena:</p>
+
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-icon">🔗</div>
+                        <h4>Merge</h4>
+                        <p>Warsh counts two segments as one verse, while Hafs counts them as two. Reduces total verse count.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">✂️</div>
+                        <h4>Split</h4>
+                        <p>Hafs counts a long passage as one verse, while Warsh divides it into two. Increases total verse count.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">↔️</div>
+                        <h4>Offset</h4>
+                        <p>The running mathematical difference between a verse number in Warsh and its counterpart in Hafs, arising from merges or splits.</p>
+                    </div>
+                    <div class="concept-card">
+                        <div class="concept-icon">🔀</div>
+                        <h4>Complex Structural Shift</h4>
+                        <p>A surah containing both merges and splits simultaneously, making a fixed offset approach impossible.</p>
+                    </div>
+                </div>
+
+                <h3>2.1 Merge — Al-Baqarah Example</h3>
+                <p>In the database (Hafs): verse 1 is <code>Alif Lam Meem</code>, verse 2 is <code>That is the Book...</code></p>
+                <p>In the UI (Warsh): verse 1 is merged: <code>Alif Lam Meem. That is the Book...</code></p>
+                <p><strong>Programmatic effect:</strong> Tapping verse 1 in the Warsh UI must fetch the commentary for <em>both</em> Hafs verses 1 and 2 and combine them.</p>
+
+                <h3>2.2 Split — Surah Muhammad Example</h3>
+                <p>In the database (Hafs): verse 4 is a long verse beginning <code>So when you meet those who disbelieve...</code></p>
+                <p>In the Warsh UI: split into verse 4 and verse 5.</p>
+                <p><strong>Programmatic effect:</strong> Both Warsh verse 4 and verse 5 must fetch Hafs verse 4's commentary.</p>
+
+                <h3>2.3 The Offset</h3>
+                <p>The offset is the running mathematical difference: <code>hafs_aya = warsh_aya + offset</code></p>
+                <ul>
+                    <li><code>offset = +1</code>: Hafs is ahead by one verse (due to a prior merge)</li>
+                    <li><code>offset = -1</code>: Hafs is behind by one verse (due to a prior split)</li>
+                    <li>The offset changes at every merge or split point</li>
+                </ul>
+
+                <h3>2.4 Complex Structural Shifts — Al Imran Example</h3>
+                <div class="callout">
+                    <strong>The trap:</strong> Surah Al Imran has 200 verses in <em>both</em> narrations. A developer may assume full alignment (offset = 0) and skip programming it — that's where things break silently.
+                </div>
+                <p>What actually happens: Warsh merges the opening <code>Alif Lam Meem</code>, creating offset +1; then later splits Hafs verse 92 into Warsh verses 91+92, cancelling the earlier merge. From verse 93 to 200 they realign. This requires building <strong>Range Maps</strong> in code — not a simple formula.</p>
+            </div>
+
+        </div><!-- end tab-intro -->
+
+
+        <!-- ==============================
+             TAB 2: MAPPING DOCUMENT
+             ============================== -->
+        <div class="doc-section" id="tab-mapping">
+
+            <!-- ARABIC MAPPING -->
+            <div class="ar-block">
+                <div class="doc-lead">
+                    هذه الوثيقة تشرح الحل التقني المُطبَّق في التطبيق لمعالجة الاختلاف في ترقيم الآيات بين رواية ورش (الواجهة) ورواية حفص (مصدر التفاسير والبيانات). الهدف موجّه أساساً للمطورين العاملين على تطبيقات القرآن الكريم.
+                </div>
+
+                <h2><span class="section-num">١</span> المقدمة والإشكالية</h2>
+                <h3>لماذا هذا الموضوع نادر على الإنترنت؟</h3>
+                <p>اختلاف عدد الآيات بين رواية ورش ورواية حفص موثّق في كتب علم القراءات، لكن لا يوجد — في حدود ما بحثنا — مصدر رقمي يوثّق <strong>نقاط الانتقال بدقة آية بآية</strong> بصيغة قابلة للبرمجة. معظم المصادر تذكر فقط أن "العدّ الكوفي يختلف عن العدّ المدني" دون تحديد السورة والآية بالضبط.</p>
+
+                <h3>السياق التقني</h3>
+                <p>التطبيق يعرض مصحف ورش (رواية ورش عن نافع) ويدعم تشغيل الصوت وعرض التفسير. مصدر التفسير هو API خارجي يستخدم ترقيم حفص (العدّ الكوفي). عند الضغط على آية في وضع ورش، كانت الدالة ترسل رقم الآية كما هو إلى الـ API، مما يُجلب بيانات آية مختلفة في السور التي يختلف فيها الترقيم.</p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>الرواية</th><th>العدّ</th><th>الاستخدام</th></tr></thead>
+                        <tbody>
+                            <tr><td>ورش (نافع — مدني أخير)</td><td>6,214 آية</td><td>قاعدة بيانات الواجهة</td></tr>
+                            <tr><td>حفص (عاصم — كوفي)</td><td>6,236 آية</td><td>مصدر التفاسير والبيانات</td></tr>
+                            <tr><td><strong>الفرق</strong></td><td><strong>22 آية</strong></td><td>موزّعة على 50 سورة</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2><span class="section-num">٢</span> المفاهيم الأساسية</h2>
+                <h3>2.1 أنواع الاختلاف</h3>
+                <p><strong>الدمج (Merge) — ورش يجمع ما فرّقه حفص:</strong></p>
+                <pre>H[n] + H[n+1]  →  W[k]        (ورش له آية أقل)</pre>
+                <p><strong>التقسيم (Split) — ورش يفرّق ما جمعه حفص:</strong></p>
+                <pre>H[n]  →  W[k] + W[k+1]        (ورش له آية أكثر)</pre>
+                <p><strong>الفواتح (Fawatih Merge):</strong> الحروف المقطعة كـ"الم" و"حم" تُعدّ في ورش آية مع ما بعدها، بينما حفص يعدّها مستقلة. هذا النوع الأكثر تكراراً ويظهر في 16 سورة.</p>
+
+                <h3>2.2 مفهوم الإزاحة (Offset)</h3>
+                <p>الإزاحة <code>offset</code> هي الفرق بين رقم الآية في ورش ورقمها المقابل في حفص:</p>
+                <pre>W[n]  =  H[n + offset]</pre>
+                <ul>
+                    <li><code>offset = 0</code>: تطابق مباشر</li>
+                    <li><code>offset = +1</code>: ورش دمج سابقاً (حفص أمامه بآية)</li>
+                    <li><code>offset = -1</code>: ورش قسّم سابقاً (حفص خلفه بآية)</li>
+                </ul>
+                <p>الإزاحة تتغير عند كل نقطة دمج أو تقسيم وتبقى ثابتة حتى النقطة التالية.</p>
+
+                <h2><span class="section-num">٣</span> الحل التقني</h2>
+                <h3>3.1 هيكل الكود</h3>
+                <pre><code>// src/utils/tafsir.ts
+
+const WARSH_EXCEPTIONS: Record&lt;number, ExceptionType&gt; = { ... }
+
+export function warshToHafsAyahs(sura: number, warshAya: number): number[]</code></pre>
+                <p>الدالة <code>warshToHafsAyahs</code> تُرجع <strong>مصفوفة</strong> (وليس رقماً واحداً) لأن آية ورش الواحدة قد تقابل آيتين في حفص عند الدمج.</p>
+
+                <h3>3.2 أنواع الاستثناءات</h3>
+                <pre><code>type ExceptionType =
+  | { type: "manual"; map: Record&lt;number, number[]&gt; }
+  | { type: "offset"; mergeAtWarshAyah: number; hafsTargetsToMerge: number[]; offsetForSubsequent: number }
+  | { type: "advanced"; explicit_map: Record&lt;number, number[]&gt;; ranges: Range[] }</code></pre>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>النوع</th><th>الاستخدام</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>manual</code></td><td>الفاتحة فقط — خريطة يدوية كاملة</td></tr>
+                            <tr><td><code>offset</code></td><td>دمج فاتحة بسيط عند W1، إزاحة +1 لكل ما بعدها</td></tr>
+                            <tr><td><code>advanced</code></td><td>أي سورة بها انتقالات متعددة أو داخلية</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>3.3 مثال على <code>advanced</code> — سورة مريم</h3>
+                <pre><code>// مريم (19): W=99, H=98 — دمج عند البداية + تقسيمان داخليان
+19: {
+  type: "advanced",
+  explicit_map: {
+    1: [1, 2],   // W1 = H1+H2  (دمج الفاتحة كهيعص)
+    40: [41],    // W40 = H41   (أول نصف التقسيم الأول)
+    41: [41],    // W41 = H41   (ثاني نصف التقسيم الأول)
+    75: [75],    // W75 = H75   (أول نصف التقسيم الثاني)
+    76: [75],    // W76 = H75   (ثاني نصف التقسيم الثاني)
+  },
+  ranges: [
+    { warshStart: 2,  warshEnd: 39, hafsOffset:  1 },
+    { warshStart: 42, warshEnd: 74, hafsOffset:  0 },
+    { warshStart: 77, warshEnd: 99, hafsOffset: -1 },
+  ],
+}</code></pre>
+
+                <h2><span class="section-num">٤</span> جدول السور الكاملة</h2>
+
+                <h3>الفئة 0 — خريطة يدوية</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>التفصيل</th></tr></thead>
+                        <tbody>
+                            <tr><td>الفاتحة (1)</td><td>7</td><td>7</td><td>البسملة لا تُعدّ آية؛ H7 مقسّم W6+W7</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>الفئة 1 — دمج فاتحة بسيط (offset +1 ثابت)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>الفرق</th><th>الفاتحة المدموجة</th></tr></thead>
+                        <tbody>
+                            <tr><td>البقرة (2)</td><td>285</td><td>286</td><td>+1</td><td>الم + ذلك الكتاب</td></tr>
+                            <tr><td>طه (20)</td><td>134</td><td>135</td><td>+1</td><td>طه + ما أنزلنا</td></tr>
+                            <tr><td>الشعراء (26)</td><td>226</td><td>227</td><td>+1</td><td>طسم + تلك آيات</td></tr>
+                            <tr><td>الروم (30)</td><td>59</td><td>60</td><td>+1</td><td>الم + غلبت الروم</td></tr>
+                            <tr><td>لقمان (31)</td><td>33</td><td>34</td><td>+1</td><td>الم + تلك آيات</td></tr>
+                            <tr><td>يس (36)</td><td>82</td><td>83</td><td>+1</td><td>يس + والقرآن</td></tr>
+                            <tr><td>غافر (40)</td><td>84</td><td>85</td><td>+1</td><td>حم + تنزيل</td></tr>
+                            <tr><td>فصلت (41)</td><td>53</td><td>54</td><td>+1</td><td>حم + كتاب</td></tr>
+                            <tr><td>الجاثية (45)</td><td>36</td><td>37</td><td>+1</td><td>حم + تنزيل</td></tr>
+                            <tr><td>الأحقاف (46)</td><td>34</td><td>35</td><td>+1</td><td>حم + تنزيل</td></tr>
+                            <tr><td>القارعة (101)</td><td>10</td><td>11</td><td>+1</td><td>القارعة + ما القارعة</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>الفئة 1b — دمج فاتحة + تقسيم داخلي (صافي = 0)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>نقطة الدمج</th><th>نقطة التقسيم</th></tr></thead>
+                        <tbody>
+                            <tr><td>آل عمران (3)</td><td>200</td><td>200</td><td>W1=[H1,H2]</td><td>H92→W91+W92</td></tr>
+                            <tr><td>الأعراف (7)</td><td>206</td><td>206</td><td>W1=[H1,H2]</td><td>H137→W136+W137</td></tr>
+                            <tr><td>القصص (28)</td><td>88</td><td>88</td><td>W1=[H1,H2]</td><td>H23→W22+W23</td></tr>
+                            <tr><td>العنكبوت (29)</td><td>69</td><td>69</td><td>W1=[H1,H2]</td><td>H29→W28+W29</td></tr>
+                            <tr><td>السجدة (32)</td><td>30</td><td>30</td><td>W1=[H1,H2]</td><td>H10→W9+W10</td></tr>
+                            <tr><td>الزخرف (43)</td><td>89</td><td>89</td><td>W1=[H1,H2]</td><td>H52→W51+W52</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>الفئة 2 — دمجات متعددة للفواتح</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>الفرق</th><th>التفاصيل</th></tr></thead>
+                        <tbody>
+                            <tr><td>ص (38)</td><td>86</td><td>88</td><td>+2</td><td>W1=[H1,H2]؛ W83=[H84,H85]</td></tr>
+                            <tr><td>الشورى (42)</td><td>50</td><td>53</td><td>+3</td><td>W1=[H1,H2,H3] (حم+عسق)؛ W30=[H32,H33]</td></tr>
+                            <tr><td>الدخان (44)</td><td>56</td><td>59</td><td>+3</td><td>W1=[H1,H2]؛ W33=[H34,H35]؛ W42=[H44,H45]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>الفئة 3 — تقسيم أو دمج وحيد (diff=±1)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>الفرق</th><th>التفصيل</th></tr></thead>
+                        <tbody>
+                            <tr><td>مريم (19)</td><td>99</td><td>98</td><td>-1</td><td>W1=[H1,H2]؛ H41→W40+W41؛ H75→W75+W76</td></tr>
+                            <tr><td>محمد (47)</td><td>39</td><td>38</td><td>-1</td><td>H4→W4+W5</td></tr>
+                            <tr><td>العلق (96)</td><td>20</td><td>19</td><td>-1</td><td>H15→W15+W16</td></tr>
+                            <tr><td>الزلزلة (99)</td><td>9</td><td>8</td><td>-1</td><td>H6→W6+W7</td></tr>
+                            <tr><td>قريش (106)</td><td>5</td><td>4</td><td>-1</td><td>H4→W4+W5</td></tr>
+                            <tr><td>الماعون (107)</td><td>6</td><td>7</td><td>+1</td><td>W6=[H6,H7]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>الفئة 4 — دمج وحيد داخلي (diff=+1)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>نقطة الدمج</th></tr></thead>
+                        <tbody>
+                            <tr><td>النساء (4)</td><td>175</td><td>176</td><td>W44=[H44,H45]</td></tr>
+                            <tr><td>الإسراء (17)</td><td>110</td><td>111</td><td>W107=[H107,H108]</td></tr>
+                            <tr><td>الأنبياء (21)</td><td>111</td><td>112</td><td>W73=[H73,H74]</td></tr>
+                            <tr><td>النجم (53)</td><td>61</td><td>62</td><td>W28=[H28,H29]</td></tr>
+                            <tr><td>الحديد (57)</td><td>28</td><td>29</td><td>W13=[H13,H14]</td></tr>
+                            <tr><td>المجادلة (58)</td><td>21</td><td>22</td><td>W20=[H20,H21]</td></tr>
+                            <tr><td>المدثر (74)</td><td>55</td><td>56</td><td>W40=[H40,H41]</td></tr>
+                            <tr><td>القيامة (75)</td><td>39</td><td>40</td><td>W18=[H18,H19]</td></tr>
+                            <tr><td>النازعات (79)</td><td>45</td><td>46</td><td>W37=[H37,H38]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>الفئة 4b — تقسيم وحيد داخلي (diff=-1)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>نقطة التقسيم</th></tr></thead>
+                        <tbody>
+                            <tr><td>المؤمنون (23)</td><td>119</td><td>118</td><td>H47→W47+W48</td></tr>
+                            <tr><td>فاطر (35)</td><td>46</td><td>45</td><td>H43→W43+W44</td></tr>
+                            <tr><td>الملك (67)</td><td>31</td><td>30</td><td>H10→W10+W11</td></tr>
+                            <tr><td>الأنفال (8)</td><td>76</td><td>75</td><td>H47→W47+W48</td></tr>
+                            <tr><td>التوبة (9)</td><td>130</td><td>129</td><td>H72→W72+W73</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>الفئة 5 — تحولات هيكلية متعددة</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>W</th><th>H</th><th>الفرق</th><th>التفاصيل</th></tr></thead>
+                        <tbody>
+                            <tr><td>المائدة (5)</td><td>122</td><td>120</td><td>-2</td><td>H1→W1+W2؛ H15→W16+W17</td></tr>
+                            <tr><td>الأنعام (6)</td><td>167</td><td>165</td><td>-2</td><td>H1→W1+W2؛ W67=[H66,H67]؛ H73→W73+W74؛ H161→W162+W163</td></tr>
+                            <tr><td>هود (11)</td><td>121</td><td>123</td><td>+2</td><td>W54=[H54,H55]؛ H86→W85+W86؛ W118=[H118,H119]؛ W120=[H121,H122]</td></tr>
+                            <tr><td>الرعد (13)</td><td>44</td><td>43</td><td>-1</td><td>H5→W5+W6؛ H16→W17+W18؛ W25=[H23,H24]</td></tr>
+                            <tr><td>إبراهيم (14)</td><td>54</td><td>52</td><td>-2</td><td>H1→W1+W2؛ H5→W6+W7؛ H9→W11+W12؛ W22=[H19,H20]</td></tr>
+                            <tr><td>الكهف (18)</td><td>105</td><td>110</td><td>+5</td><td>W35=[H35,H36]؛ W84=[H85,H86]؛ W87=[H89,H90]؛ W89=[H92,H93]؛ W99=[H103,H104]</td></tr>
+                            <tr><td>الحج (22)</td><td>76</td><td>78</td><td>+2</td><td>W18=[H18,H19]؛ W19=[H20,H21]</td></tr>
+                            <tr><td>النور (24)</td><td>62</td><td>64</td><td>+2</td><td>W36=[H36,H37]؛ W42=[H43,H44]</td></tr>
+                            <tr><td>النمل (27)</td><td>95</td><td>93</td><td>-2</td><td>H33→W33+W34؛ H44→W45+W46</td></tr>
+                            <tr><td>الزمر (39)</td><td>72</td><td>75</td><td>+3</td><td>H3→W3+W4؛ W12=[H11,H12]؛ W14=[H14,H15]؛ W35=[H36,H37]؛ W37=[H39,H40]</td></tr>
+                            <tr><td>الطور (52)</td><td>47</td><td>49</td><td>+2</td><td>W1=[H1,H2]؛ W12=[H13,H14]</td></tr>
+                            <tr><td>الرحمن (55)</td><td>77</td><td>78</td><td>+1</td><td>W1=[H1,H2]</td></tr>
+                            <tr><td>الواقعة (56)</td><td>99</td><td>96</td><td>-3</td><td>H8→W8+W9؛ H9→W10+W11؛ H18→W20+W21؛ W25=[H22,H23]؛ H41→W43+W44</td></tr>
+                            <tr><td>نوح (71)</td><td>30</td><td>28</td><td>-2</td><td>H24→W24+W25؛ H25→W26+W27</td></tr>
+                            <tr><td>المزمل (73)</td><td>18</td><td>20</td><td>+2</td><td>W1=[H1,H2]؛ W16=[H17,H18]</td></tr>
+                            <tr><td>الفجر (89)</td><td>32</td><td>30</td><td>-2</td><td>H15→W15+W16؛ H16→W17+W18؛ H25→W27+W28؛ W32=[H29,H30]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2><span class="section-num">٥</span> منهجية التحقق</h2>
+                <h3>5.1 التحقق من آخر آية</h3>
+                <p>الاختبار الأكثر موثوقية: التحقق من أن <code>warshToHafsAyahs(W_last) == H_last</code> لكل سورة:</p>
+                <pre><code class="language-python">mapped = warsh_to_hafs(exc, w_last)
+assert mapped[-1] == h_last  # يجب أن تتطابق</code></pre>
+                <p>نجح لجميع 56 سورة في <code>WARSH_EXCEPTIONS</code>.</p>
+
+                <h3>5.2 التحقق من المحتوى</h3>
+                <p>مقارنة نص الآيات الفعلي عند نقاط الانتقال باستخدام تطبيع عربي:</p>
+                <pre><code class="language-python">def normalize(text):
+    text = re.sub(r'[أإآٱ]', 'ا', text)
+    text = text.replace('ى','ي').replace('ے','ي')
+    text = re.sub(r'[^\u0621-\u064A\s]', '', text)  # حروف عربية فقط</code></pre>
+
+                <div class="callout warning">
+                    <strong>تنبيه:</strong> مقارنة المحتوى بين ورش وحفص تنتج تطابقات وهمية (false positives) بسبب اختلاف الرسم العثماني بين الروايتين. هذا الاختلاف مقصود وموثّق، ليس تصحيفاً. لذا استُخدم التحقق من المحتوى فقط <strong>لتأكيد نقاط الانتقال</strong> وليس للمقارنة العامة.
+                </div>
+
+                <h2><span class="section-num">٦</span> الاستدراكات والتصحيحات التقنية</h2>
+                <p>جميع هذه الاستدراكات اكتُشفت عبر فحص المحتوى النصي الفعلي أو عبر فشل اختبار last-aya:</p>
+
+                <h3>6.1 استدراكات مرحلة بناء الخريطة (الإدخال الأولي)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>القيمة الأولية</th><th>السبب</th><th>التصحيح</th></tr></thead>
+                        <tbody>
+                            <tr><td>النساء (4)</td><td>W46=[H46,H47]</td><td>تقدير أولي للموضع</td><td>W44=[H44,H45]</td></tr>
+                            <tr><td>الأنبياء (21)</td><td>W74=[H74,H75]</td><td>تقدير أولي للموضع</td><td>W73=[H73,H74]</td></tr>
+                            <tr><td>فاطر (35)</td><td>H45→W45+W46</td><td>تقدير أولي للموضع</td><td>H43→W43+W44</td></tr>
+                            <tr><td>الرحمن (55)</td><td>W1+W2 دمجان + تقسيم H37</td><td>تعقيد زائد</td><td>W1=[H1,H2] فقط</td></tr>
+                            <tr><td>المدثر (74)</td><td>W41=[H41,H42]</td><td>تقدير أولي للموضع</td><td>W40=[H40,H41]</td></tr>
+                            <tr><td>الفجر (89)</td><td>تقسيمان فقط H15+H16</td><td>بيانات منقوصة</td><td>3 تقسيمات + دمج</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>6.2 استدراكات مرحلة التحقق الشامل</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>السورة</th><th>الوضع الأولي</th><th>التأثير</th><th>التصحيح</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>مريم (19)</strong></td><td>تقسيم واحد H[42] فقط</td><td>W[41..99] كلها غير صحيحة</td><td>تقسيمان: H[41] وH[75]؛ + دمج W[1]=[H1,H2]</td></tr>
+                            <tr><td><strong>محمد (47)</strong></td><td>تقسيم عند H[15]</td><td>W[5..15] غير صحيحة (10 آيات)</td><td>تقسيم عند H[4]→W[4]+W[5]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2><span class="section-num">٧</span> إحصاءات نهائية</h2>
+                <div class="stats-row">
+                    <div class="stat-box"><span class="stat-num">114</span><span class="stat-label">إجمالي سور القرآن</span></div>
+                    <div class="stat-box"><span class="stat-num">50</span><span class="stat-label">سورة بفرق في العدّ</span></div>
+                    <div class="stat-box"><span class="stat-num">6</span><span class="stat-label">سور بتحولات داخلية (فرق=0)</span></div>
+                    <div class="stat-box"><span class="stat-num">56</span><span class="stat-label">سورة في WARSH_EXCEPTIONS</span></div>
+                    <div class="stat-box"><span class="stat-num">58</span><span class="stat-label">سورة تطابق 1:1 مباشر</span></div>
+                    <div class="stat-box"><span class="stat-num">8</span><span class="stat-label">استدراكات اكتُشفت وصُحّحت</span></div>
+                </div>
+
+                <h2><span class="section-num">٨</span> ملاحظات للمطورين</h2>
+                <h3>اختلاف الرسم العثماني — طبيعي ومتوقع</h3>
+                <p>عند مقارنة نص ورش بنص حفص برمجياً، الاختلافات التالية في الرسم العثماني طبيعية ومقصودة، لا ينبغي الخلط بينها وبين التصحيف:</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>ورش (مدني)</th><th>حفص (كوفي)</th><th>ملاحظة</th></tr></thead>
+                        <tbody>
+                            <tr><td>السموت</td><td>السماوات</td><td>رسم عثماني مختلف</td></tr>
+                            <tr><td>ءامنوا</td><td>آمنوا / امنوا</td><td>اختلاف كتابة الهمزة</td></tr>
+                            <tr><td>اهلكنها</td><td>اهلكناها</td><td>اختلاف في ضمير الجمع</td></tr>
+                            <tr><td>يراءون</td><td>يرائون</td><td>اختلاف رسم الهمزة</td></tr>
+                            <tr><td>ے</td><td>ي</td><td>حرف مختلف في مصحف ورش</td></tr>
+                            <tr><td>۞ (ربع الحزب)</td><td>—</td><td>علامة خاصة بمصحف ورش</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>منطق الصوتيات</h3>
+                <p>الدالة <code>warshToHafsAyahs()</code> تُستخدم في وضعين:</p>
+                <ol>
+                    <li><strong>التفسير:</strong> دائماً — مصدر التفاسير يستخدم ترقيم حفص</li>
+                    <li><strong>الصوت (CDN):</strong> فقط عند <code>moqriId.startsWith("warsh_")</code> — ملفات الصوت مرقّمة بترقيم حفص حتى للقراء الذين يقرؤون بورش</li>
+                    <li><strong>الصوت (DB):</strong> لا يحتاجها — الكوشي والقزابري مرقّمان بترقيم ورش مباشرة</li>
+                </ol>
+
+                <h2><span class="section-num">٩</span> مصادر</h2>
+                <ul>
+                    <li><strong>قاعدة البيانات:</strong> نص ورش بالترقيم المدني (العدّ المدني الأخير)</li>
+                    <li><strong>نص حفص:</strong> نص حفص بالترقيم الكوفي</li>
+                    <li><strong>مصدر التفاسير:</strong> API خارجي يستخدم ترقيم حفص الكوفي</li>
+                    <li><strong>مرجع علمي:</strong> علم القراءات — كتب "معرفة عدد آي القرآن" وجداول الفرق بين العدّين المدني والكوفي</li>
+                </ul>
+            </div><!-- end ar-block mapping -->
+
+            <!-- ENGLISH MAPPING -->
+            <div class="en-block">
+                <div class="doc-lead">
+                    This document explains the technical solution implemented in the app to handle the verse-numbering discrepancy between the Warsh narration (UI) and the Hafs narration (commentary/data source). It is primarily aimed at developers building Quran applications.
+                </div>
+
+                <h2><span class="section-num">1</span> Background and Problem</h2>
+                <h3>Why is this rare online?</h3>
+                <p>The difference in verse count between Warsh and Hafs is documented in Quranic sciences literature, but there is no digital resource — within our research — that documents <strong>transition points verse-by-verse in a programmable format</strong>. Most sources only mention that "the Kufi count differs from the Madani count" without specifying the exact surah and verse.</p>
+
+                <h3>Technical Context</h3>
+                <p>The app displays the Warsh Mushaf and supports audio playback and commentary display. The commentary source is an external API that uses Hafs numbering (Kufi count). When tapping a verse in Warsh mode, the function was sending the verse number as-is to the API, returning data for a different verse in surahs where the numbering diverges.</p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Narration</th><th>Count</th><th>Usage</th></tr></thead>
+                        <tbody>
+                            <tr><td>Warsh (Nafi — Last Madani)</td><td>6,214 verses</td><td>UI database</td></tr>
+                            <tr><td>Hafs (Asim — Kufi)</td><td>6,236 verses</td><td>Commentary/data source</td></tr>
+                            <tr><td><strong>Difference</strong></td><td><strong>22 verses</strong></td><td>Spread across 50 surahs</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2><span class="section-num">2</span> Core Concepts</h2>
+                <h3>2.1 Types of Divergence</h3>
+                <p><strong>Merge — Warsh combines what Hafs separates:</strong></p>
+                <pre>H[n] + H[n+1]  →  W[k]        (Warsh has fewer verses)</pre>
+                <p><strong>Split — Warsh divides what Hafs keeps as one:</strong></p>
+                <pre>H[n]  →  W[k] + W[k+1]        (Warsh has more verses)</pre>
+                <p><strong>Opening Letters (Fawatih) Merge:</strong> Letters like "Alif Lam Meem" and "Ha Meem" are counted in Warsh as one verse with the following text, while Hafs counts them independently. This is the most frequent type, appearing in 16 surahs.</p>
+
+                <h3>2.2 The Offset</h3>
+                <p>The offset is the difference between a Warsh verse number and its Hafs counterpart:</p>
+                <pre>W[n]  =  H[n + offset]</pre>
+                <ul>
+                    <li><code>offset = 0</code>: Direct match</li>
+                    <li><code>offset = +1</code>: Warsh had a prior merge (Hafs is ahead by one)</li>
+                    <li><code>offset = -1</code>: Warsh had a prior split (Hafs is behind by one)</li>
+                </ul>
+                <p>The offset changes at every merge or split point and stays constant until the next one.</p>
+
+                <h2><span class="section-num">3</span> Technical Solution</h2>
+                <h3>3.1 Code Structure</h3>
+                <pre><code>// src/utils/tafsir.ts
+
+const WARSH_EXCEPTIONS: Record&lt;number, ExceptionType&gt; = { ... }
+
+export function warshToHafsAyahs(sura: number, warshAya: number): number[]</code></pre>
+                <p>The function returns an <strong>array</strong> (not a single number) because a single Warsh verse can correspond to two Hafs verses when merged.</p>
+
+                <h3>3.2 Exception Types</h3>
+                <pre><code>type ExceptionType =
+  | { type: "manual"; map: Record&lt;number, number[]&gt; }
+  | { type: "offset"; mergeAtWarshAyah: number; hafsTargetsToMerge: number[]; offsetForSubsequent: number }
+  | { type: "advanced"; explicit_map: Record&lt;number, number[]&gt;; ranges: Range[] }</code></pre>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Type</th><th>Usage</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>manual</code></td><td>Al-Fatiha only — full manual map</td></tr>
+                            <tr><td><code>offset</code></td><td>Simple opening-letter merge at W1, fixed +1 offset for all subsequent verses</td></tr>
+                            <tr><td><code>advanced</code></td><td>Any surah with multiple or internal transitions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>3.3 Advanced Example — Surah Maryam</h3>
+                <pre><code>// Maryam (19): W=99, H=98 — opening merge + two internal splits
+19: {
+  type: "advanced",
+  explicit_map: {
+    1: [1, 2],   // W1 = H1+H2  (Kaf Ha Ya Ain Sad merge)
+    40: [41],    // W40 = H41   (first half of split 1)
+    41: [41],    // W41 = H41   (second half of split 1)
+    75: [75],    // W75 = H75   (first half of split 2)
+    76: [75],    // W76 = H75   (second half of split 2)
+  },
+  ranges: [
+    { warshStart: 2,  warshEnd: 39, hafsOffset:  1 },
+    { warshStart: 42, warshEnd: 74, hafsOffset:  0 },
+    { warshStart: 77, warshEnd: 99, hafsOffset: -1 },
+  ],
+}</code></pre>
+
+                <h2><span class="section-num">4</span> Complete Surah Tables</h2>
+
+                <h3>Category 0 — Manual map</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Details</th></tr></thead>
+                        <tbody>
+                            <tr><td>Al-Fatiha (1)</td><td>7</td><td>7</td><td>Basmala not counted; H7 split into W6+W7</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Category 1 — Simple opening merge (fixed offset +1)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Diff</th><th>Merged Opening</th></tr></thead>
+                        <tbody>
+                            <tr><td>Al-Baqarah (2)</td><td>285</td><td>286</td><td>+1</td><td>Alif Lam Meem + That is the Book</td></tr>
+                            <tr><td>Ta-Ha (20)</td><td>134</td><td>135</td><td>+1</td><td>Ta Ha + We have not sent down</td></tr>
+                            <tr><td>Ash-Shu'ara (26)</td><td>226</td><td>227</td><td>+1</td><td>Ta Sin Meem + Those are verses</td></tr>
+                            <tr><td>Ar-Rum (30)</td><td>59</td><td>60</td><td>+1</td><td>Alif Lam Meem + The Romans have been defeated</td></tr>
+                            <tr><td>Luqman (31)</td><td>33</td><td>34</td><td>+1</td><td>Alif Lam Meem + These are verses</td></tr>
+                            <tr><td>Ya-Sin (36)</td><td>82</td><td>83</td><td>+1</td><td>Ya Sin + By the wise Quran</td></tr>
+                            <tr><td>Ghafir (40)</td><td>84</td><td>85</td><td>+1</td><td>Ha Meem + The revelation</td></tr>
+                            <tr><td>Fussilat (41)</td><td>53</td><td>54</td><td>+1</td><td>Ha Meem + A Book</td></tr>
+                            <tr><td>Al-Jathiya (45)</td><td>36</td><td>37</td><td>+1</td><td>Ha Meem + The revelation</td></tr>
+                            <tr><td>Al-Ahqaf (46)</td><td>34</td><td>35</td><td>+1</td><td>Ha Meem + The revelation</td></tr>
+                            <tr><td>Al-Qari'a (101)</td><td>10</td><td>11</td><td>+1</td><td>Al-Qari'a + What is Al-Qari'a</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Category 1b — Opening merge + internal split (net = 0)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Merge Point</th><th>Split Point</th></tr></thead>
+                        <tbody>
+                            <tr><td>Al Imran (3)</td><td>200</td><td>200</td><td>W1=[H1,H2]</td><td>H92→W91+W92</td></tr>
+                            <tr><td>Al-A'raf (7)</td><td>206</td><td>206</td><td>W1=[H1,H2]</td><td>H137→W136+W137</td></tr>
+                            <tr><td>Al-Qasas (28)</td><td>88</td><td>88</td><td>W1=[H1,H2]</td><td>H23→W22+W23</td></tr>
+                            <tr><td>Al-Ankabut (29)</td><td>69</td><td>69</td><td>W1=[H1,H2]</td><td>H29→W28+W29</td></tr>
+                            <tr><td>As-Sajda (32)</td><td>30</td><td>30</td><td>W1=[H1,H2]</td><td>H10→W9+W10</td></tr>
+                            <tr><td>Az-Zukhruf (43)</td><td>89</td><td>89</td><td>W1=[H1,H2]</td><td>H52→W51+W52</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Category 2 — Multiple opening merges</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Diff</th><th>Details</th></tr></thead>
+                        <tbody>
+                            <tr><td>Sad (38)</td><td>86</td><td>88</td><td>+2</td><td>W1=[H1,H2]; W83=[H84,H85]</td></tr>
+                            <tr><td>Ash-Shura (42)</td><td>50</td><td>53</td><td>+3</td><td>W1=[H1,H2,H3] (Ha Meem + Ain Sin Qaf); W30=[H32,H33]</td></tr>
+                            <tr><td>Ad-Dukhan (44)</td><td>56</td><td>59</td><td>+3</td><td>W1=[H1,H2]; W33=[H34,H35]; W42=[H44,H45]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Category 3 — Single split or merge (diff=±1)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Diff</th><th>Details</th></tr></thead>
+                        <tbody>
+                            <tr><td>Maryam (19)</td><td>99</td><td>98</td><td>-1</td><td>W1=[H1,H2]; H41→W40+W41; H75→W75+W76</td></tr>
+                            <tr><td>Muhammad (47)</td><td>39</td><td>38</td><td>-1</td><td>H4→W4+W5</td></tr>
+                            <tr><td>Al-Alaq (96)</td><td>20</td><td>19</td><td>-1</td><td>H15→W15+W16</td></tr>
+                            <tr><td>Az-Zalzala (99)</td><td>9</td><td>8</td><td>-1</td><td>H6→W6+W7</td></tr>
+                            <tr><td>Quraysh (106)</td><td>5</td><td>4</td><td>-1</td><td>H4→W4+W5</td></tr>
+                            <tr><td>Al-Ma'un (107)</td><td>6</td><td>7</td><td>+1</td><td>W6=[H6,H7]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Category 4 — Single internal merge (diff=+1)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Merge Point</th></tr></thead>
+                        <tbody>
+                            <tr><td>An-Nisa (4)</td><td>175</td><td>176</td><td>W44=[H44,H45]</td></tr>
+                            <tr><td>Al-Isra (17)</td><td>110</td><td>111</td><td>W107=[H107,H108]</td></tr>
+                            <tr><td>Al-Anbiya (21)</td><td>111</td><td>112</td><td>W73=[H73,H74]</td></tr>
+                            <tr><td>An-Najm (53)</td><td>61</td><td>62</td><td>W28=[H28,H29]</td></tr>
+                            <tr><td>Al-Hadid (57)</td><td>28</td><td>29</td><td>W13=[H13,H14]</td></tr>
+                            <tr><td>Al-Mujadila (58)</td><td>21</td><td>22</td><td>W20=[H20,H21]</td></tr>
+                            <tr><td>Al-Muddaththir (74)</td><td>55</td><td>56</td><td>W40=[H40,H41]</td></tr>
+                            <tr><td>Al-Qiyama (75)</td><td>39</td><td>40</td><td>W18=[H18,H19]</td></tr>
+                            <tr><td>An-Nazi'at (79)</td><td>45</td><td>46</td><td>W37=[H37,H38]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Category 4b — Single internal split (diff=-1)</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Split Point</th></tr></thead>
+                        <tbody>
+                            <tr><td>Al-Mu'minun (23)</td><td>119</td><td>118</td><td>H47→W47+W48</td></tr>
+                            <tr><td>Fatir (35)</td><td>46</td><td>45</td><td>H43→W43+W44</td></tr>
+                            <tr><td>Al-Mulk (67)</td><td>31</td><td>30</td><td>H10→W10+W11</td></tr>
+                            <tr><td>Al-Anfal (8)</td><td>76</td><td>75</td><td>H47→W47+W48</td></tr>
+                            <tr><td>At-Tawba (9)</td><td>130</td><td>129</td><td>H72→W72+W73</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Category 5 — Multiple structural shifts</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>W</th><th>H</th><th>Diff</th><th>Details</th></tr></thead>
+                        <tbody>
+                            <tr><td>Al-Ma'ida (5)</td><td>122</td><td>120</td><td>-2</td><td>H1→W1+W2; H15→W16+W17</td></tr>
+                            <tr><td>Al-An'am (6)</td><td>167</td><td>165</td><td>-2</td><td>H1→W1+W2; W67=[H66,H67]; H73→W73+W74; H161→W162+W163</td></tr>
+                            <tr><td>Hud (11)</td><td>121</td><td>123</td><td>+2</td><td>W54=[H54,H55]; H86→W85+W86; W118=[H118,H119]; W120=[H121,H122]</td></tr>
+                            <tr><td>Ar-Ra'd (13)</td><td>44</td><td>43</td><td>-1</td><td>H5→W5+W6; H16→W17+W18; W25=[H23,H24]</td></tr>
+                            <tr><td>Ibrahim (14)</td><td>54</td><td>52</td><td>-2</td><td>H1→W1+W2; H5→W6+W7; H9→W11+W12; W22=[H19,H20]</td></tr>
+                            <tr><td>Al-Kahf (18)</td><td>105</td><td>110</td><td>+5</td><td>W35=[H35,H36]; W84=[H85,H86]; W87=[H89,H90]; W89=[H92,H93]; W99=[H103,H104]</td></tr>
+                            <tr><td>Al-Hajj (22)</td><td>76</td><td>78</td><td>+2</td><td>W18=[H18,H19]; W19=[H20,H21]</td></tr>
+                            <tr><td>An-Nur (24)</td><td>62</td><td>64</td><td>+2</td><td>W36=[H36,H37]; W42=[H43,H44]</td></tr>
+                            <tr><td>An-Naml (27)</td><td>95</td><td>93</td><td>-2</td><td>H33→W33+W34; H44→W45+W46</td></tr>
+                            <tr><td>Az-Zumar (39)</td><td>72</td><td>75</td><td>+3</td><td>H3→W3+W4; W12=[H11,H12]; W14=[H14,H15]; W35=[H36,H37]; W37=[H39,H40]</td></tr>
+                            <tr><td>At-Tur (52)</td><td>47</td><td>49</td><td>+2</td><td>W1=[H1,H2]; W12=[H13,H14]</td></tr>
+                            <tr><td>Ar-Rahman (55)</td><td>77</td><td>78</td><td>+1</td><td>W1=[H1,H2]</td></tr>
+                            <tr><td>Al-Waqi'a (56)</td><td>99</td><td>96</td><td>-3</td><td>H8→W8+W9; H9→W10+W11; H18→W20+W21; W25=[H22,H23]; H41→W43+W44</td></tr>
+                            <tr><td>Nuh (71)</td><td>30</td><td>28</td><td>-2</td><td>H24→W24+W25; H25→W26+W27</td></tr>
+                            <tr><td>Al-Muzzammil (73)</td><td>18</td><td>20</td><td>+2</td><td>W1=[H1,H2]; W16=[H17,H18]</td></tr>
+                            <tr><td>Al-Fajr (89)</td><td>32</td><td>30</td><td>-2</td><td>H15→W15+W16; H16→W17+W18; H25→W27+W28; W32=[H29,H30]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2><span class="section-num">5</span> Verification Methodology</h2>
+                <h3>5.1 Last-Verse Validation</h3>
+                <p>The most reliable test: verifying that <code>warshToHafsAyahs(W_last) == H_last</code> for every surah:</p>
+                <pre><code class="language-python">mapped = warsh_to_hafs(exc, w_last)
+assert mapped[-1] == h_last  # must match</code></pre>
+                <p>Passed for all 56 surahs in <code>WARSH_EXCEPTIONS</code>.</p>
+
+                <h3>5.2 Content Validation</h3>
+                <p>Comparing actual verse text at transition points using Arabic normalization:</p>
+                <pre><code class="language-python">def normalize(text):
+    text = re.sub(r'[أإآٱ]', 'ا', text)
+    text = text.replace('ى','ي').replace('ے','ي')
+    text = re.sub(r'[^\u0621-\u064A\s]', '', text)  # Arabic letters only</code></pre>
+
+                <div class="callout warning">
+                    <strong>Important:</strong> Direct content comparison between Warsh and Hafs produces many false positives due to intentional differences in the Uthmanic script between the two narrations (e.g., "السموت" in Warsh vs "السماوات" in Hafs). This is a deliberate and documented scriptural difference, not a transcription issue. Content validation was used only to <strong>confirm transition points</strong>, not for general comparison.
+                </div>
+
+                <h2><span class="section-num">6</span> Technical Corrections &amp; Revisions</h2>
+                <p>All of the following were discovered through actual text content inspection or through last-aya test failures:</p>
+
+                <h3>6.1 Revisions During Initial Map Construction</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>Initial Value</th><th>Reason</th><th>Correction</th></tr></thead>
+                        <tbody>
+                            <tr><td>An-Nisa (4)</td><td>W46=[H46,H47]</td><td>Initial position estimate</td><td>W44=[H44,H45]</td></tr>
+                            <tr><td>Al-Anbiya (21)</td><td>W74=[H74,H75]</td><td>Initial position estimate</td><td>W73=[H73,H74]</td></tr>
+                            <tr><td>Fatir (35)</td><td>H45→W45+W46</td><td>Initial position estimate</td><td>H43→W43+W44</td></tr>
+                            <tr><td>Ar-Rahman (55)</td><td>Two merges + H37 split</td><td>Overcomplicated</td><td>W1=[H1,H2] only</td></tr>
+                            <tr><td>Al-Muddaththir (74)</td><td>W41=[H41,H42]</td><td>Initial position estimate</td><td>W40=[H40,H41]</td></tr>
+                            <tr><td>Al-Fajr (89)</td><td>Two splits only H15+H16</td><td>Incomplete data</td><td>3 splits + 1 merge</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>6.2 Revisions During Full Verification Pass</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Surah</th><th>Initial State</th><th>Impact</th><th>Correction</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Maryam (19)</strong></td><td>Single split at H[42] only</td><td>W[41..99] all incorrect</td><td>Two splits: H[41] and H[75]; + merge W[1]=[H1,H2]</td></tr>
+                            <tr><td><strong>Muhammad (47)</strong></td><td>Split at H[15]</td><td>W[5..15] incorrect (10 verses)</td><td>Split at H[4]→W[4]+W[5]</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2><span class="section-num">7</span> Final Statistics</h2>
+                <div class="stats-row">
+                    <div class="stat-box"><span class="stat-num">114</span><span class="stat-label">Total Quran surahs</span></div>
+                    <div class="stat-box"><span class="stat-num">50</span><span class="stat-label">Surahs with count difference</span></div>
+                    <div class="stat-box"><span class="stat-num">6</span><span class="stat-label">Surahs with internal shifts (diff=0)</span></div>
+                    <div class="stat-box"><span class="stat-num">56</span><span class="stat-label">Surahs in WARSH_EXCEPTIONS</span></div>
+                    <div class="stat-box"><span class="stat-num">58</span><span class="stat-label">Surahs with direct 1:1 match</span></div>
+                    <div class="stat-box"><span class="stat-num">8</span><span class="stat-label">Revisions discovered &amp; corrected</span></div>
+                </div>
+
+                <h2><span class="section-num">8</span> Developer Notes</h2>
+                <h3>Uthmanic Script Differences — Normal &amp; Expected</h3>
+                <p>When comparing Warsh and Hafs text programmatically, the following script differences are intentional and documented. Do not treat them as transcription issues:</p>
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>Warsh (Madani)</th><th>Hafs (Kufi)</th><th>Note</th></tr></thead>
+                        <tbody>
+                            <tr><td>السموت</td><td>السماوات</td><td>Different Uthmanic script</td></tr>
+                            <tr><td>ءامنوا</td><td>آمنوا / امنوا</td><td>Hamza writing variation</td></tr>
+                            <tr><td>اهلكنها</td><td>اهلكناها</td><td>Plural pronoun difference</td></tr>
+                            <tr><td>يراءون</td><td>يرائون</td><td>Hamza script variation</td></tr>
+                            <tr><td>ے</td><td>ي</td><td>Different letter form in Warsh</td></tr>
+                            <tr><td>۞ (Rub' al-Hizb)</td><td>—</td><td>Warsh-specific mark</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Audio Logic</h3>
+                <p>The function <code>warshToHafsAyahs()</code> is used in two modes:</p>
+                <ol>
+                    <li><strong>Commentary:</strong> Always — the commentary source uses Hafs numbering</li>
+                    <li><strong>Audio (CDN):</strong> Only when <code>moqriId.startsWith("warsh_")</code> — CDN audio files are numbered with Hafs numbering even for Warsh reciters</li>
+                    <li><strong>Audio (DB):</strong> Not needed — local DB reciters are already numbered with Warsh numbering</li>
+                </ol>
+
+                <h2><span class="section-num">9</span> Sources</h2>
+                <ul>
+                    <li><strong>Database:</strong> Warsh text with Madani numbering (Last Madani Count)</li>
+                    <li><strong>Hafs text:</strong> Hafs text with Kufi numbering</li>
+                    <li><strong>Commentary source:</strong> External API using Hafs/Kufi numbering</li>
+                    <li><strong>Academic reference:</strong> Quranic sciences — works on verse counting and tables comparing the Madani and Kufi counts</li>
+                </ul>
+            </div><!-- end en-block mapping -->
+
+        </div><!-- end tab-mapping -->
+
+    </div><!-- end doc-wrapper -->
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+        <div class="footer-links">
+            <a href="../index.html" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+            <a href="https://github.com/Zizwar/mushaf-mauri" target="_blank" rel="noopener">GitHub</a>
+        </div>
+        <p>&copy; 2026 Mushaf Mauri &mdash; <span data-ar="جميع الحقوق محفوظة" data-en="All rights reserved">جميع الحقوق محفوظة</span></p>
+    </footer>
+
+    <script>
+        // ===== Theme Toggle =====
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeIcon.className = savedTheme === 'dark' ? 'fa fa-sun-o' : 'fa fa-moon-o';
+
+        themeToggle.addEventListener('click', () => {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeIcon.className = next === 'dark' ? 'fa fa-sun-o' : 'fa fa-moon-o';
+        });
+
+        // ===== Language Toggle =====
+        const langToggle = document.getElementById('langToggle');
+        const langLabel = document.getElementById('langLabel');
+        const savedLang = localStorage.getItem('lang') || 'ar';
+
+        function applyLanguage(lang) {
+            const isAr = lang === 'ar';
+            document.documentElement.lang = isAr ? 'ar' : 'en';
+            document.documentElement.dir = isAr ? 'rtl' : 'ltr';
+            langLabel.textContent = isAr ? 'EN' : 'ع';
+
+            // Swap data-ar / data-en inline elements
+            document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+                el.textContent = isAr ? el.dataset.ar : el.dataset.en;
+            });
+        }
+
+        applyLanguage(savedLang);
+
+        langToggle.addEventListener('click', () => {
+            const current = localStorage.getItem('lang') || 'ar';
+            const next = current === 'ar' ? 'en' : 'ar';
+            localStorage.setItem('lang', next);
+            applyLanguage(next);
+        });
+
+        // ===== Tab Navigation =====
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabSections = document.querySelectorAll('.doc-section');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.dataset.tab;
+                tabBtns.forEach(b => b.classList.remove('active'));
+                tabSections.forEach(s => s.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('tab-' + target).classList.add('active');
+                // update tab btn text based on current lang
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+
+        // ===== Scroll-based navbar shadow =====
+        window.addEventListener('scroll', () => {
+            document.querySelector('.navbar').classList.toggle('scrolled', window.scrollY > 10);
+        });
+    </script>
+</body>
+</html>
