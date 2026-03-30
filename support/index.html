@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.css">
     <style>
         :root {
             --primary: #357fef;
@@ -126,27 +127,20 @@
         .section-title p { color:var(--text-muted); font-size:0.9rem; }
         .divider { border:none; border-top:1px solid var(--border); margin:40px 0; }
 
-        /* ===== Contributors Ticker ===== */
-        .ticker-section { background:var(--bg-alt); padding:40px 0; overflow:hidden; }
+        /* ===== Contributors Slider (Slick) ===== */
+        .ticker-section { background:var(--bg-alt); padding:40px 0; }
         .ticker-label {
             text-align:center; margin-bottom:22px;
             font-size:0.88rem; color:var(--text-muted); letter-spacing:0.02em;
         }
         .ticker-label span { color:var(--primary); font-weight:600; }
 
-        .ticker-wrap {
-            overflow:hidden; position:relative; width:100%;
-            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
-        }
-        .ticker-track {
-            display:flex; gap:14px; width:max-content;
-            direction: ltr;
-            will-change: transform;
-        }
+        /* Slick wrapper overrides */
+        .slick-ticker { padding: 4px 20px 16px; }
+        .slick-ticker .slick-slide { padding: 0 8px; }
+        .slick-ticker .slick-list { overflow: hidden; }
 
         .contributor-card {
-            flex-shrink:0;
             background:var(--card-bg); border:1px solid var(--border);
             border-radius:14px; padding:14px 18px;
             display:flex; gap:12px; align-items:flex-start;
@@ -344,8 +338,7 @@
         <span>شكر وتقدير</span> — من أسهموا في دعم المشروع
     </div>
 
-    <div class="ticker-wrap">
-        <div class="ticker-track" id="tickerTrack">
+    <div class="slick-ticker" id="contributorSlider">
 
             <!-- 1: Said Moftakir -->
             <div class="contributor-card">
@@ -486,8 +479,7 @@
                 </div>
             </div>
 
-        </div><!-- end ticker-track -->
-    </div>
+    </div><!-- end contributorSlider -->
 </section>
 
 <hr class="divider" style="margin:0;">
@@ -642,44 +634,31 @@
         el.style.display = el.style.display === 'none' || el.style.display === '' ? 'block' : 'none';
     }
 
-    // ===== JS Ticker =====
-    (function () {
-        const track = document.getElementById('tickerTrack');
-        if (!track) return;
-
-        // Clone original cards so the loop is seamless (no HTML duplicates needed)
-        Array.from(track.children).forEach(function (card) {
-            track.appendChild(card.cloneNode(true));
+</script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script>
+    $(function () {
+        $('#contributorSlider').slick({
+            rtl:            true,
+            infinite:       true,
+            autoplay:       true,
+            autoplaySpeed:  2200,
+            speed:          700,
+            cssEase:        'ease-in-out',
+            slidesToShow:   4,
+            slidesToScroll: 1,
+            arrows:         false,
+            dots:           false,
+            pauseOnHover:   true,
+            pauseOnFocus:   false,
+            responsive: [
+                { breakpoint: 1024, settings: { slidesToShow: 3 } },
+                { breakpoint: 700,  settings: { slidesToShow: 2 } },
+                { breakpoint: 440,  settings: { slidesToShow: 1 } }
+            ]
         });
-
-        var speed = 0.6;      // px per frame  (~36px/s at 60fps)
-        var pos   = 0;        // current translateX offset (positive = how far we've scrolled left)
-        var paused = false;
-        var oneSetWidth = 0;  // width of one copy of cards
-
-        function init() {
-            oneSetWidth = track.scrollWidth / 2;
-            pos = -oneSetWidth;                    // ابدأ من copy2 (اليسار)
-            requestAnimationFrame(step);
-        }
-
-        function step() {
-            if (!paused) {
-                pos += speed;
-                if (pos >= 0) pos = -oneSetWidth;  // reset سلس: copy2 تحل محل copy1
-                track.style.transform = 'translateX(' + pos + 'px)';
-            }
-            requestAnimationFrame(step);
-        }
-
-        track.addEventListener('mouseenter', function () { paused = true; });
-        track.addEventListener('mouseleave', function () { paused = false; });
-        track.addEventListener('touchstart',  function () { paused = true; },  { passive: true });
-        track.addEventListener('touchend',    function () { paused = false; }, { passive: true });
-
-        if (document.readyState === 'complete') { init(); }
-        else { window.addEventListener('load', init); }
-    })();
+    });
 </script>
 </body>
 </html>
