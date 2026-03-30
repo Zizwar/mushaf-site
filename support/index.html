@@ -659,15 +659,15 @@
 
         function init() {
             oneSetWidth = track.scrollWidth / 2;
-            pos = 0;
+            pos = -oneSetWidth;                    // ابدأ من copy2 (اليسار)
             requestAnimationFrame(step);
         }
 
         function step() {
             if (!paused) {
                 pos += speed;
-                if (pos >= oneSetWidth) pos = 0;   // seamless reset — copy2 is identical to copy1
-                track.style.transform = 'translateX(-' + pos + 'px)';
+                if (pos >= 0) pos = -oneSetWidth;  // reset سلس: copy2 تحل محل copy1
+                track.style.transform = 'translateX(' + pos + 'px)';
             }
             requestAnimationFrame(step);
         }
