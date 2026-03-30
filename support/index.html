@@ -139,18 +139,10 @@
             mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
         }
-        /* force LTR so translateX direction is predictable regardless of page dir */
         .ticker-track {
             display:flex; gap:14px; width:max-content;
             direction: ltr;
-            animation: ticker-move 48s linear infinite;
             will-change: transform;
-        }
-        .ticker-track:hover { animation-play-state:paused; }
-
-        @keyframes ticker-move {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
         }
 
         .contributor-card {
@@ -763,10 +755,47 @@
         el.style.display = el.style.display === 'none' || el.style.display === '' ? 'block' : 'none';
     }
 
-    // ===== Pause ticker on touch (mobile) =====
-    const track = document.getElementById('tickerTrack');
-    track.addEventListener('touchstart', () => track.style.animationPlayState = 'paused', { passive: true });
-    track.addEventListener('touchend',   () => track.style.animationPlayState = 'running');
+    // ===== JS Ticker: left → right, no CSS animation =====
+    (function () {
+        const track = document.getElementById('tickerTrack');
+        const speed = 0.55;   // px per frame
+        let pos = 0;
+        let halfWidth = 0;
+        let paused = false;
+        let rafId = null;
+
+        function init() {
+            // halfWidth = width of one copy of the cards
+            halfWidth = track.scrollWidth / 2;
+            // start with track offset so first card enters from the left edge
+            pos = -halfWidth;
+            track.style.transform = 'translateX(' + pos + 'px)';
+            rafId = requestAnimationFrame(step);
+        }
+
+        function step() {
+            if (!paused) {
+                pos += speed;
+                // when first copy fully exited right, jump back
+                if (pos >= 0) pos -= halfWidth;
+                track.style.transform = 'translateX(' + pos + 'px)';
+            }
+            rafId = requestAnimationFrame(step);
+        }
+
+        // pause on hover / touch
+        track.addEventListener('mouseenter', function () { paused = true; });
+        track.addEventListener('mouseleave', function () { paused = false; });
+        track.addEventListener('touchstart',  function () { paused = true; },  { passive: true });
+        track.addEventListener('touchend',    function () { paused = false; }, { passive: true });
+
+        // init after full render
+        if (document.readyState === 'complete') {
+            init();
+        } else {
+            window.addEventListener('load', init);
+        }
+    })();
 </script>
 </body>
 </html>
