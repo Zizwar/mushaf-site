@@ -47,6 +47,7 @@
             font-family: 'Noto Kufi Arabic', sans-serif;
             background: var(--bg); color: var(--text);
             line-height: 1.8; transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
         }
         a { text-decoration: none; color: inherit; }
 
@@ -134,13 +135,16 @@
         .ticker-label span { color:var(--primary); font-weight:600; }
 
         .ticker-wrap {
-            overflow:hidden; position:relative;
-            mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+            overflow:hidden; position:relative; width:100%;
+            mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
         }
+        /* force LTR so translateX direction is predictable regardless of page dir */
         .ticker-track {
             display:flex; gap:14px; width:max-content;
-            animation: ticker-move 38s linear infinite;
+            direction: ltr;
+            animation: ticker-move 48s linear infinite;
+            will-change: transform;
         }
         .ticker-track:hover { animation-play-state:paused; }
 
@@ -351,7 +355,7 @@
     <div class="ticker-wrap">
         <div class="ticker-track" id="tickerTrack">
 
-            <!-- Card 1 -->
+            <!-- 1: Said Moftakir -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#4f7df3;">س</div>
                 <div class="contrib-body">
@@ -361,17 +365,17 @@
                 </div>
             </div>
 
-            <!-- Card 2 -->
+            <!-- 2: Mehdi Baha — 800 DH -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#0e9f6e;">م</div>
                 <div class="contrib-body">
                     <div class="contrib-name">Mehdi Baha</div>
-                    <div class="contrib-amount">20 $</div>
+                    <div class="contrib-amount">800 درهم</div>
                     <div class="contrib-msg rahma">صدقة جارية عن روح جدي الغندور رحمة الله عليه</div>
                 </div>
             </div>
 
-            <!-- Card 3 -->
+            <!-- 3: حسن مرشاش -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#7c3aed;">ح</div>
                 <div class="contrib-body">
@@ -381,17 +385,36 @@
                 </div>
             </div>
 
-            <!-- Card 4 -->
+            <!-- 4: مبارك العرفاوي — جديد -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#16a34a;">م</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">مبارك العرفاوي</div>
+                    <div class="contrib-amount">1200 درهم</div>
+                    <div class="contrib-msg dua">بارك الله في هذا المشروع ونفع به</div>
+                </div>
+            </div>
+
+            <!-- 5: علي لعتابي -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#db7706;">ع</div>
                 <div class="contrib-body">
                     <div class="contrib-name">علي لعتابي</div>
-                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">بدون مبلغ محدد</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
                     <div class="contrib-msg dua">اللهم ارزقني الزوجة الصالحة 🤲 بالتوفيق</div>
                 </div>
             </div>
 
-            <!-- Card 5 — anonymous with request -->
+            <!-- 6: مجهول #1 بدون نص -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#334155;">؟</div>
+                <div class="contrib-body">
+                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                </div>
+            </div>
+
+            <!-- 7: مجهول #m-7632 مع طلب -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#475569;">م</div>
                 <div class="contrib-body">
@@ -402,27 +425,36 @@
                 </div>
             </div>
 
-            <!-- Card 6 -->
+            <!-- 8: Nawal Zekrari — 400 DH -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#be185d;">ن</div>
                 <div class="contrib-body">
-                    <div class="contrib-name">نوال زكرار</div>
-                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-name">Nawal Zekrari</div>
+                    <div class="contrib-amount">400 درهم</div>
                     <div class="contrib-msg dua">دعاء لوالدتي الحبيبة المريضة، اللهم اشفها</div>
                 </div>
             </div>
 
-            <!-- Card 7 — totally anonymous -->
+            <!-- 9: الحاج علي بيدي — جديد -->
             <div class="contributor-card">
-                <div class="avatar" style="background:#334155;">?</div>
+                <div class="avatar" style="background:#b45309;">ح</div>
                 <div class="contrib-body">
-                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
-                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
-                    <div class="contrib-msg" style="color:var(--text-muted); font-style:italic;">بدون رسالة</div>
+                    <div class="contrib-name">الحاج علي بيدي</div>
+                    <div class="contrib-amount">500 درهم</div>
+                    <div class="contrib-msg rahma">اللهم اغفر للحاج بونجرت وارحمه</div>
                 </div>
             </div>
 
-            <!-- راضية -->
+            <!-- 10: مجهول #2 بدون نص -->
+            <div class="contributor-card">
+                <div class="avatar" style="background:#334155;">؟</div>
+                <div class="contrib-body">
+                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                </div>
+            </div>
+
+            <!-- 11: راضية -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#0891b2;">ر</div>
                 <div class="contrib-body">
@@ -432,7 +464,7 @@
                 </div>
             </div>
 
-            <!-- Duplicate for seamless loop -->
+            <!-- === نسخة مكررة للحلقة المتصلة === -->
             <div class="contributor-card">
                 <div class="avatar" style="background:#4f7df3;">س</div>
                 <div class="contrib-body">
@@ -445,7 +477,7 @@
                 <div class="avatar" style="background:#0e9f6e;">م</div>
                 <div class="contrib-body">
                     <div class="contrib-name">Mehdi Baha</div>
-                    <div class="contrib-amount">20 $</div>
+                    <div class="contrib-amount">800 درهم</div>
                     <div class="contrib-msg rahma">صدقة جارية عن روح جدي الغندور رحمة الله عليه</div>
                 </div>
             </div>
@@ -458,11 +490,26 @@
                 </div>
             </div>
             <div class="contributor-card">
+                <div class="avatar" style="background:#16a34a;">م</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">مبارك العرفاوي</div>
+                    <div class="contrib-amount">1200 درهم</div>
+                    <div class="contrib-msg dua">بارك الله في هذا المشروع ونفع به</div>
+                </div>
+            </div>
+            <div class="contributor-card">
                 <div class="avatar" style="background:#db7706;">ع</div>
                 <div class="contrib-body">
                     <div class="contrib-name">علي لعتابي</div>
-                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">بدون مبلغ محدد</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
                     <div class="contrib-msg dua">اللهم ارزقني الزوجة الصالحة 🤲 بالتوفيق</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#334155;">؟</div>
+                <div class="contrib-body">
+                    <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
+                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
                 </div>
             </div>
             <div class="contributor-card">
@@ -477,17 +524,24 @@
             <div class="contributor-card">
                 <div class="avatar" style="background:#be185d;">ن</div>
                 <div class="contrib-body">
-                    <div class="contrib-name">نوال زكرار</div>
-                    <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
+                    <div class="contrib-name">Nawal Zekrari</div>
+                    <div class="contrib-amount">400 درهم</div>
                     <div class="contrib-msg dua">دعاء لوالدتي الحبيبة المريضة، اللهم اشفها</div>
                 </div>
             </div>
             <div class="contributor-card">
-                <div class="avatar" style="background:#334155;">?</div>
+                <div class="avatar" style="background:#b45309;">ح</div>
+                <div class="contrib-body">
+                    <div class="contrib-name">الحاج علي بيدي</div>
+                    <div class="contrib-amount">500 درهم</div>
+                    <div class="contrib-msg rahma">اللهم اغفر للحاج بونجرت وارحمه</div>
+                </div>
+            </div>
+            <div class="contributor-card">
+                <div class="avatar" style="background:#334155;">؟</div>
                 <div class="contrib-body">
                     <div class="contrib-name" style="color:var(--text-muted);">مجهول</div>
                     <div class="contrib-amount" style="color:var(--text-muted); font-size:0.75rem;">—</div>
-                    <div class="contrib-msg" style="color:var(--text-muted); font-style:italic;">بدون رسالة</div>
                 </div>
             </div>
             <div class="contributor-card">
