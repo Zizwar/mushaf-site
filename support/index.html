@@ -69,6 +69,13 @@
         .nav-links { display:flex; gap:20px; list-style:none; }
         .nav-links a { font-size:0.87rem; font-weight:500; color:var(--text-muted); transition:color var(--transition); }
         .nav-links a:hover, .nav-links a.active { color:var(--primary); }
+        .btn-back {
+            display:inline-flex; align-items:center; gap:6px;
+            padding:7px 14px; border-radius:8px; font-size:0.87rem; font-weight:500;
+            color:var(--text-muted); border:1px solid var(--border); background:var(--card-bg);
+            transition:all var(--transition); text-decoration:none;
+        }
+        .btn-back:hover { color:var(--primary); border-color:var(--primary); }
         .nav-btn {
             width:36px; height:36px; border-radius:8px;
             border:1px solid var(--border); background:var(--card-bg);
@@ -301,6 +308,10 @@
 <!-- Nav -->
 <nav class="navbar">
     <div class="nav-inner">
+        <a href="../index.html" class="btn-back">
+            <i class="fa fa-arrow-right"></i>
+            <span>عودة</span>
+        </a>
         <a href="../index.html" class="nav-brand">
             <span>&#1758;</span> المصحف الموري
         </a>
