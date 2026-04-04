@@ -635,19 +635,31 @@
             overflow: hidden;
         }
 
+        .screenshots-wrapper {
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
         .screenshots-track {
             display: flex;
             gap: 20px;
-            animation: scroll-rtl 40s linear infinite;
+            animation: scroll-rtl 50s linear infinite;
             width: max-content;
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         [dir="ltr"] .screenshots-track {
-            animation: scroll-ltr 40s linear infinite;
+            animation: scroll-ltr 50s linear infinite;
         }
 
-        .screenshots-track:hover {
-            animation-play-state: paused;
+        @media (hover: hover) {
+            .screenshots-track:hover {
+                animation-play-state: paused;
+            }
         }
 
         .screenshot-item {
@@ -1046,10 +1058,6 @@
                             <i class="fa fa-github"></i>
                             GitHub
                         </a>
-                        <a href="https://exp.host/@zizwar/MushafMauri" class="dev-link">
-                            <i class="fa fa-circle"></i>
-                            Expo
-                        </a>
                         <a href="docs/index.html" class="dev-link">
                             <i class="fa fa-file-text-o"></i>
                             <span data-ar="الورقة البيضاء" data-en="White Paper">الورقة البيضاء</span>
@@ -1121,6 +1129,11 @@
                     <li>
                         <a href="https://github.com/zizwar" aria-label="GitHub">
                             <i class="fa fa-github"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="docs/index.html" aria-label="White Paper">
+                            <i class="fa fa-file-text-o"></i>
                         </a>
                     </li>
                     <li>
